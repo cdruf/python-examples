@@ -1,26 +1,34 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jul  6 15:43:16 2020
-
-@author: 49856
+This example writes and loads a config file.
 """
-
 
 import configparser
 
-config = configparser.ConfigParser()
-config['DEFAULT'] = {'ServerAliveInterval': '45',
-                     'Compression': 'yes',
-                     'CompressionLevel': '9'}
-config['bitbucket.org'] = {}
-config['bitbucket.org']['User'] = 'hg'
-config['topsecret.server.com'] = {}
- 
-topsecret = config['topsecret.server.com']
-topsecret['Port'] = '50022'     # mutates the parser
-topsecret['ForwardX11'] = 'no'  # same here
+# %%
+# Write
 
-config['DEFAULT']['ForwardX11'] = 'yes'
+config = configparser.ConfigParser()
+config['DEFAULT'] = {'Attribute 1': '42',
+                     'Attribute 2': '43'}
+config['A'] = {}
+config['A']['User'] = 'xyz'
+
+config['C'] = {}
+topsecret = config['C']
+topsecret['C.1'] = '22'
+topsecret['C.2'] = '23'
+
+config['DEFAULT']['Attribute 3'] = 'yes'
 
 with open('config.ini', 'w') as configfile:
     config.write(configfile)
+
+# %%
+# Load
+
+conf = configparser.ConfigParser()
+conf.read('config.ini')
+conf.sections()
+print(config['DEFAULT']['Attribute 1'])
+

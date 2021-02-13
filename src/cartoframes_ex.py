@@ -12,3 +12,6 @@ stores_df = pd.read_csv('http://libs.cartocdn.com/cartoframes/files/starbucks_br
 
 
 print(stores_df.head())
+
+
+# TODO
