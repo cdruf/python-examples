@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue May  5 20:53:30 2020
+Script reads gurobi model from file in order to calculate the irreducible inconsistent subsystem of constraints.
 
-@author: 49856
+@author: Christian Ruf
 """
 
 import sys
+
 import gurobipy as gp
 from gurobipy import GRB
 
@@ -29,7 +30,6 @@ if model.status == GRB.OPTIMAL:
 elif model.status != GRB.INFEASIBLE:
     print('Optimization was stopped with status %d' % model.status)
     sys.exit(0)
-
 
 # Model is infeasible - compute an Irreducible Inconsistent Subsystem (IIS)
 

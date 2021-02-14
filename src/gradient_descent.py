@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Mar 27 20:06:24 2020
+Gradient descent example.
 
-@author: Christian
+@author: Christian Ruf
 """
 
 import numpy as np

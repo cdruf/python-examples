@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar 16 17:48:32 2020
 
-@author: kalle
+@author: Christian Ruf
 """
 
 from geopy.geocoders import Nominatim

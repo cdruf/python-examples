@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr 16 13:08:15 2020
 
-@author: 49856
+@author: Christian Ruf
 """
 
 from time import time
