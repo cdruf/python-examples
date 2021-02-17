@@ -2,6 +2,7 @@
 pip>=21
 pandas>=1.0
 pandas_profiling>=2.10
+pandasql>=0.7.3
 tabulate>=0.8.7
 numpy>=1.17
 tqdm>=4.51.0
