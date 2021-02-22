@@ -20,7 +20,22 @@ pd.Series({'a': 1, 'b': 2})
 pd.Series({'a': 1, 'b': 2}, index=['b', 'c'])
 
 # Date index
-pd.Series([1, 2, 3, 4], name='Sales', index=pd.date_range('20130101', periods=4))
+series = pd.Series([1, 2, 3, 4], name='Sales', index=pd.date_range('20130101', periods=4))
+series
+series.index.year  # get year
+series.index.month  # get month
+series.index.day  # get day
+
+# Date column
+series = pd.Series(['01-02-2000', '08-05-1997','04-28-1996', '12-16-1995'], index=['1', '2', '3', '4'])
+series = pd.to_datetime(series)
+series
+series.dt.month  # get month
+pd.DatetimeIndex(series).month  # get month by transforming into index first
+
+# get year from the corresponding
+# birth_date column value
+df['year'] = pd.DatetimeIndex(df['birth_date']).year
 
 # Concat, append
 pd.concat([pd.Series([1, None]), pd.Series([10, 20])])
