@@ -1,19 +1,19 @@
 # core library requirements
 pip>=21
-pandas>=1.0
+pandas
 pandas_profiling>=2.10
-pandasql>=0.7.3
+pandasql
 tabulate>=0.8.7
-numpy>=1.17
+numpy
 tqdm>=4.51.0
 
-seaborn>=0.10
-matplotlib>=3.2
+seaborn
+matplotlib
 plotly>=4.14
 
 PyYAML>=5.3.1
 pyodbc>=4.0.30
-openpyxl>=3.0.5
+openpyxl
 
 pre-commit>=2.6.0
 flake8>=3.7.8
@@ -25,4 +25,10 @@ pre-commit-hooks>=2.3.0
 pytest>=5.2.0
 pytest-cov>=2.8.1
 
-scikit-learn>=0.23.2
+scikit-learn
+
+gurobipy
+numba
+holidays
+simpy
+scipy
