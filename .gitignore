@@ -14,7 +14,6 @@ tmp
 *.so
 
 # Distribution / packaging
-**/*ipynb
 .Python
 env/
 build/
