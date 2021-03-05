@@ -19,7 +19,7 @@ to a Python object using this conversion table.
 
 
 
-with open('/home/cpunkt/Dropbox/workspace_spyder/JsonEx/data.json') as f:
+with open('/home/cpunkt/Dropbox/workspace_spyder/JsonEx/dat.json') as f:
     data = json.load(f)
 
 print(data)

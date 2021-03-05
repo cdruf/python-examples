@@ -366,3 +366,11 @@ print(a)
 
 [str(i) for i in a.lst]
 # %%
+
+
+
+
+# TODO: put in the correct spot
+april_1st = datetime(2021, 4, 1)
+print(f"April the 1st is a {april_1st.strftime('%A')}")
+print(f"April the 0st in calendar week {april_1st.isocalendar()[1]}")

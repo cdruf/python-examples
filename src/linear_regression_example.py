@@ -19,7 +19,7 @@ X = df['lotsize']
 X=X.values.reshape(len(X),1)
 Y=Y.values.reshape(len(Y),1)
 
-# Split the data into training/testing sets
+# Split the dat into training/testing sets
 X_train = X[:-250]
 X_test = X[-250:]
 

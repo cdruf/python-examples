@@ -12,7 +12,7 @@ import pandas as pd
 
 #%%
 ## Data
-df = pd.read_csv("./demographic data.csv")
+df = pd.read_csv("./demographic dat.csv")
 df
 
 n = len(df)
@@ -32,7 +32,7 @@ weights = np.ones(K)
 # should the normalization be different for the sums?
 
 #%%
-# Simple data
+# Simple dat
 
 #n = 4 # 
 #m = 2 #

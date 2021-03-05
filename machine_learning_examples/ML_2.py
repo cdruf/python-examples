@@ -20,7 +20,7 @@ from sklearn.model_selection import cross_val_score
 from sklearn.metrics import mean_absolute_error
 
 
-## sample data iris (classify iris type)
+## sample dat iris (classify iris type)
 iris = datasets.load_iris()
 iris.feature_names
 iris.data
@@ -31,7 +31,7 @@ iris.target
 
 
 
-## sample data digits (classify digit)
+## sample dat digits (classify digit)
 digits = datasets.load_digits()
 digits.target
 digits.target.size # n examples
@@ -47,7 +47,7 @@ y = digits.target[:-1]
 clf.fit(X, y)
 clf.predict(digits.data[-1:])
 
-# split into traingin and test data
+# split into traingin and test dat
 X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.4, random_state=0)
 clf = svm.SVC(kernel='linear', C=1).fit(X_train, y_train)
 clf.score(X_test, y_test)          
@@ -76,7 +76,7 @@ knn.predict(iris_X_test)
 iris_y_test
 
 
-## Data transformation with held out data
+## Data transformation with held out dat
 
 
 

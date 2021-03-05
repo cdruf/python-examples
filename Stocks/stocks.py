@@ -117,7 +117,7 @@ def load(symbol):
     return pd.DataFrame.from_dict(data['Time Series (Daily)'])
 
 def prepare(df):
-    ''' prepare the downloaded data '''
+    ''' prepare the downloaded dat '''
     df = df.T # transpose
     df = df.iloc[::-1] # reverse
     df.columns = ['open', 'high', 'low', 'close', 'volume']

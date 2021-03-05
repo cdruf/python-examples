@@ -3,7 +3,7 @@ import numpy as np
 '''
 Erstellen
 '''
-# from existing data
+# from existing dat
 
 np.array([1, 2, 3], dtype=complex)
 np.array([[1, 2, 3], [4, 5, 6]])

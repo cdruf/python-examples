@@ -1,3 +1,4 @@
+import matplotlib
 import matplotlib.pyplot as plt
 # import matplotlib
 # matplotlib.matplotlib_fname()
@@ -147,7 +148,7 @@ plt.show()
 mu, sigma = 100, 15
 x = mu + sigma * np.random.randn(10000)
 
-# the histogram of the data
+# the histogram of the dat
 n, bins, patches = plt.hist(x, 50, density=1, facecolor='g', alpha=0.75)
 
 plt.xlabel('Smarts')
@@ -175,3 +176,13 @@ x = np.arange(0, 3, 0.01)
 y = x
 z = (x + y) / 1000
 ax.plot3D(x, y, z, 'gray')
+
+
+
+
+#%%
+"""
+# Colors
+"""
+for name, hex in matplotlib.colors.cnames.items():
+    print(name, hex)

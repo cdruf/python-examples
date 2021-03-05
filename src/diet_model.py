@@ -4,7 +4,7 @@
 Simple assignment model.
 
 Tuples for multi-dimensional subscripts
-Dictionaries for indexed data
+Dictionaries for indexed dat
 Gurobi tuplelist: for storing a list of tuples
 """
 

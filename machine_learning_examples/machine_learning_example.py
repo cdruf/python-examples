@@ -40,7 +40,7 @@ scikit
 '''
 
 
-# sample data iris
+# sample dat iris
 iris = datasets.load_iris()
 dir(iris)
 iris.feature_names
@@ -48,7 +48,7 @@ iris.data
 iris.target_names
 iris.target
 
-# sample data digits
+# sample dat digits
 digits = datasets.load_digits()
 dir(digits)
 digits.target
@@ -77,8 +77,8 @@ clf.predict(digits.data[-1:])
 ###
 # k nearest neighbor für den Iris-Datensatz
 ###
-# Split iris data in train and test data
-# A random permutation, to split the data randomly
+# Split iris dat in train and test dat
+# A random permutation, to split the dat randomly
 iris_X = iris.data
 iris_y = iris.target
 

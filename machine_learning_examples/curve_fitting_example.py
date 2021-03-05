@@ -5,7 +5,7 @@ from functools import reduce
 
 # %%
 
-df = pd.read_csv("data/curve_fitting_example.csv")
+df = pd.read_csv("dat/curve_fitting_example.csv")
 df.head()
 x = df.index.to_numpy()
 y = df['values'].to_numpy()

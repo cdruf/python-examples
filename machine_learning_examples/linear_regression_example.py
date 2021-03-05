@@ -7,13 +7,13 @@ from pathlib import Path
 # %%
 
 print(Path.cwd())
-df = pd.read_csv("data/Housing.csv")
+df = pd.read_csv("dat/Housing.csv")
 print(df.head())
 
 X = df['lotsize'].to_numpy().reshape(-1, 1)
 Y = df['price'].to_numpy().reshape(-1, 1)
 
-# Split data into training and testing sets
+# Split dat into training and testing sets
 X_train = X[:-250]
 Y_train = Y[:-250]
 X_test = X[-250:]

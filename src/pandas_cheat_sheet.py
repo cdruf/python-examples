@@ -160,7 +160,7 @@ cols = [c for c in df.columns if c.lower()[:4] != 'test']
 df = df[cols]
 
 # Load
-df = pd.read_csv('data/olympics.csv', index_col=0, skiprows=1)
+df = pd.read_csv('dat/olympics.csv', index_col=0, skiprows=1)
 for col in df.columns:
     if col[:2] == '01':
         df.rename(columns={col: 'Gold' + col[4:]}, inplace=True)
