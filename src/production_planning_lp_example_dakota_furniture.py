@@ -7,7 +7,8 @@ including linear programming sensitivity analysis.
 """
 import gurobipy as grb
 import numpy as np
-import pandas as pd
+
+from util import gurobi_helper as helper
 
 # %%
 
@@ -34,55 +35,20 @@ model.update()
 
 model.optimize()
 
+# %%
+
 print('\n=== Solution ===\n')
 print('Objective value = %g' % model.objVal)
 
-df_variables = pd.DataFrame(data=[(v.varName, v.x, v.rc) for v in model.getVars()],
-                            columns=['Variable', 'Value', 'Reduced cost'])
-print(df_variables)
+df_variables = helper.get_variables_df(model)
+print(df_variables, '\n')
 
-df_constraints = pd.DataFrame(data=[(c.constrName, c.slack, c.pi) for c in model.getConstrs()],
-                              columns=['Constraint', 'Slack or surplus', 'Dual price'])
+df_constraints = helper.get_constraints_df(model)
 print(df_constraints)
 
 # %%
 
-print('\n=== Ranges in which the basis is unchanged ===\n')
-
-print('Objective coefficient ranges')
-df_obj_coeff_ranges = pd.DataFrame(
-    data=[(v.varName, v.obj,
-           (-v.rc if abs(v.x) < 0.001 else 0),  # condition <==> not in basis
-           (grb.GRB.INFINITY if abs(v.x) < 0.001 else 0))
-          for v in model.getVars()],
-    columns=['Variable', 'Objective coefficient', 'allowable increase', 'allowable decrease'])
-print(df_obj_coeff_ranges)
 
 print('\nRHS Ranges')
-
-
-def get_rhs_allowable_increase(constraint):
-    if -0.001 <= constraint.slack <= 0.001:  # no slack => binding
-        return 0
-    else:
-        return (grb.GRB.INFINITY if constraint.sense == '<' else
-                (constraint.slack if constraint.sense == '>' else 0))
-
-
-def get_rhs_allowable_decrease(constraint):
-    if -0.001 <= constraint.slack <= 0.001:  # no slack => binding
-        return 0
-    else:
-        if constraint.sense == '<':
-            return constraint.slack
-        elif constraint.sense == '>':
-            return -grb.GRB.INFINITY
-        else:
-            return 0
-
-
-df_rhs_ranges = pd.DataFrame(
-    data=[(c.constrName, c.rhs, get_rhs_allowable_increase(c), get_rhs_allowable_decrease(c))
-          for c in model.getConstrs()],
-    columns=['Constraint', 'RHS', 'Allowable increase', 'Allowable decrease'])
+df_rhs_ranges = helper.get_rhs_ranges(model)
 print(df_rhs_ranges)
