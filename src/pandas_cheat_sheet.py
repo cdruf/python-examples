@@ -33,9 +33,6 @@ series
 series.dt.month  # get month
 pd.DatetimeIndex(series).month  # get month by transforming into index first
 
-# get year from the corresponding
-# birth_date column value
-df['year'] = pd.DatetimeIndex(df['birth_date']).year
 
 # Concat, append
 pd.concat([pd.Series([1, None]), pd.Series([10, 20])])
@@ -104,6 +101,10 @@ pd.DataFrame([(1, 'b', 3),
 df = pd.DataFrame({'col 1': [1, 2, 3], 'col 2': [4, 5, 6]}, index=['row 1', 'row 2', 'row 3'])
 df2 = df.iloc[0:0].copy()
 df2
+
+# get year from the corresponding
+# birth_date column value
+df['year'] = pd.DatetimeIndex(df['birth_date']).year
 
 # %%
 

@@ -2,7 +2,7 @@
 """
 Created on Tue Feb  2 12:59:14 2021
 
-@author: 49856
+@author: Christian Ruf
 """
 
 import pulp

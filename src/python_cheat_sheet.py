@@ -14,17 +14,14 @@ a, b = b, a
 print(a, b)
 print(a, b, sep=', ')
 
-print("Spam " * 4)
+"Spam " * 4
 
-print(type(1))
-print(type(1.1))
+type(1), type(1.1), type('abc')
 
-print(min(1, 2, 3))
-print(max(1, 2, 3))
+min(1, 2, 3), max(1, 2, 3)
+abs(-32)
 
-print(abs(-32))
-
-print(int('807') + 1)  # cast to int
+int('807') + 1  # cast to int
 
 # %%
 
@@ -34,6 +31,7 @@ print(int('807') + 1)  # cast to int
 # Format
 print('%d -> %d' % (1, 2))
 print('{} -> {}'.format(1, 2))
+print(f'{1} -> {2}')
 
 # Fill
 str(3).zfill(4)
@@ -95,15 +93,15 @@ unittest.main()
 # elif
 
 # conversion
-print(bool(1))  # all numbers are treated as true, except 0
-print(bool(0))
-print(bool("asf"))  # all strings are treated as true, except the empty string ""
-print(bool(""))
+bool(1)  # all numbers are treated as true, except 0
+bool(0)
+bool("foo")  # all strings are treated as true, except the empty string ""
+bool("")
 
-print(sum([True, False, True]))  # 2
+sum([True, False, True])  # 2
 
 # ternary
-print('failed' if 1 < 50 else 'passed')
+'failed' if 1 < 50 else 'passed'
 
 # %%
 
@@ -124,8 +122,8 @@ planets += ['Jupiter', 'Venus']
 planets.pop()  # letztes!
 planets.pop(0)  # erstes
 planets
-planets.index('Neptune')
 
+planets.index('Neptune')
 'Uranus' in planets
 
 [1] * 3  # repeat
@@ -133,39 +131,44 @@ planets.index('Neptune')
 # zip, unzip
 list1 = [5, 3, 1, 4, 2]
 list2 = ['five', 'three', 'one', 'four', 'two']
+list3 = [55, 33, 11, 44, 22]
+print(*list1)  # unpack list
+z = list(zip(list1, list2, list3))
+z
+l1, l2, l3 = list(zip(*z))
+list(l1) == list1
 
-list(zip(list1, list2))
-l1, l2 = zip(*zip(list1, list2))
+
 
 # print
-'| '.join(['%s, %s' % (j, i) for i, j in zip(list1, list2)])
+' | '.join([f'{j}, {i}' for i, j in zip(list1, list2)])
 
 # sort 
 sorted(planets)
 sorted(planets, key=lambda x: x[-1], reverse=True)
-print(sorted(zip(list1, list2), key=lambda x: x[0], reverse=True))
-print(*sorted(zip(list1, list2), key=lambda x: x[0], reverse=True))
+sorted(zip(list1, list2), key=lambda x: x[0], reverse=True)
+
 list1, list2 = zip(*sorted(zip(list1, list2), key=lambda x: x[0], reverse=True))
 list1
 list2
 
 
 # Map
-doubled_list = map(lambda x: x*2, list1)
-print(', '.join([str(x) for x in doubled_list]))
+list(map(lambda x: x*2, list1))
 
 
 # Reduce
-summation = reduce(lambda x, y: x + y, list1, 0)
-summation
+reduce(lambda x, y: x + y, list1, 0)  # sum elements
+sum(list1)
+
 
 # Any, all
 all([0, 1, 2])  # 0 = False
 any([0, 1, 2])
 
 # Filter
-iterator = filter(lambda x: x != 2, [1, 2, 3])
-list(iterator)
+list(filter(lambda x: x != 2, [1, 2, 3]))
+
 
 
 # %%
@@ -182,36 +185,49 @@ a
 
 """
 # Sets
+
+Set is mutable.
+ImmutableSet also derives from BaseSet.
+
 """
 
-help(set)
+# Instances of Set and ImmutableSet both provide the following operations
 
-set([1, 1, 2, 3])
+a = set([1, 1, 2, 3])
+a == {1, 2, 3}
 
-# ...
+len(a)
+2 in a
+
+b = {3, 4}
+a | b
+a & b
+a - b
+
+{1}.issubset({1, 2}) 
+{1} <= {1, 2}
+{1}.issuperset({1, 2})
+{1} >= {1, 2}
+
+a ^ b
+a.symmetric_difference(b)
+
+a.copy()
 
 # %%
+"""
+# List / set comprehensions
+"""
 
-
-###
-# List comprehensions
-###
 [n ** 2 for n in range(10)]
-[n * 50 for n in range(1, 9)]
-[(i, j) for i in range(2) for j in range(3)]
-[[j for j in range(9, 11)] for i in range(2)]
+[(i, j) for i in range(2) for j in range(2)]  
 
-ns = [n * 50 for n in range(1, 9)]
-results = {}
-for n in ns: results[n] = 'asdf'
-results
+keys = [n * 50 for n in range(1, 6)]
+{k: k*2 for k in keys}
 
-[n * (n + 1) for n in range(5)]
 
-[(i, j) for i in ['a', 'b'] for j in [1, 2]]  # sequence
-
+# gurobi datatypes
 import gurobipy as grb
-
 arcs = grb.tuplelist([('a', 'b'), ('b', 'c'), ('a', 'c')])
 [arc for arc in arcs.select('a', '*')]
 [arc for arc in arcs if arc[0] == 'a']  # less efficient
@@ -254,11 +270,11 @@ sum(v for k, v in filter(lambda x: x[0] != 'x', w.items()))
 from collections import defaultdict
 
 d = defaultdict(lambda: -1)
-print(d[0])
+d[0]
 d = defaultdict(list)
-print(d[0])
-d[1].append(1)
-print(d[1])
+d[0]
+d[1].append(1)  # the default value is a list, 1 is appended to that list
+d[1]
 
 d = {}
 d.setdefault(0, -1)
@@ -267,9 +283,8 @@ print(d)
 
 # Nested dictionary and items
 d = {'a': {'x': 1}, 'b': {'y': 2, 'z': 3}}
-lst = ['{}, {}, {}'.format(k1, k2, v2) for k1, v1 in d.items()
-       for k2, v2 in v1.items()]
-print(lst)
+d
+[f'{k1}, {k2}, {v2}' for k1, v1 in d.items() for k2, v2 in v1.items()]
 
 
 # %%
@@ -308,13 +323,6 @@ cheapest = map(min, store1, store2)
 type(cheapest)
 for item in cheapest:
     print(item)
-
-
-# Function for comparing different models
-def score_model(model, X_t=X_train, X_v=X_valid, y_t=y_train, y_v=y_valid) -> float:
-    model.fit(X_t, y_t)
-    preds = model.predict(X_v)
-    return mean_absolute_error(y_v, preds)
 
 
 # %%
