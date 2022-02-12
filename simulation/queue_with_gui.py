@@ -9,7 +9,7 @@ import pandas as pd
 import simpy
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGridLayout, QLabel, QWidget, QToolBar
 
-from src.step_function import StepFunction
+from util.step_function import StepFunction
 from util.plotting import show_histogram
 
 # %%
