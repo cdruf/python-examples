@@ -40,3 +40,5 @@ PuLP~=2.5.0
 
 # Simulation
 simpy~=4.0.1
+
+xlsxwriter

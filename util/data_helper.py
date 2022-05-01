@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 
 
@@ -164,3 +166,13 @@ def check_if_keys_exist_exactly_once(column: pd.Series, keys):
     tmp = column[keys]
     if len(tmp.keys().unique()) < len(tmp):
         raise RuntimeError("Duplicate keys")
+
+
+def to_excel_from_dfs(path: str, dfs: list, sheet_names: list):
+    if os.path.exists(path):
+        raise RuntimeError(f"Path {path} exists already.")
+
+    with pd.ExcelWriter(path, engine='xlsxwriter') as writer:
+        for idx, df in enumerate(dfs):
+            sheet_name = sheet_names[idx]
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
