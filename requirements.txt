@@ -1,24 +1,30 @@
 # core library requirements
 pip>=21
-pandas~=1.3.2
+pandas
 pandasql~=0.7.3
 tabulate>=0.8.7
-numpy~=1.20.3
-scipy~=1.7.1
+numpy
+scipy
 tqdm>=4.51.0
-numba~=0.54.0
-holidays~=0.11.2
+numba
+holidays
 
-# data analysis
-pandas_profiling>=2.10
-seaborn~=0.11.2
-matplotlib~=3.4.3
-plotly>=4.14
 
 # data connections
 PyYAML>=5.3.1
 pyodbc>=4.0.30
 openpyxl~=3.0.7
+
+# data analysis
+pandas_profiling>=2.10
+seaborn~=0.11.2
+matplotlib
+plotly>=4.14
+
+# mapping
+geopandas
+folium
+mapclassify
 
 pre-commit>=2.6.0
 flake8>=3.7.8
@@ -31,12 +37,12 @@ pytest>=5.2.0
 pytest-cov>=2.8.1
 
 # machine learning
-scikit-learn~=0.24.2
+scikit-learn
 
 # optimization
-gurobipy~=9.1.2
-ortools~=9.0.9048
-PuLP~=2.5.0
+gurobipy
+ortools
+PuLP
 
 # Simulation
 simpy~=4.0.1
