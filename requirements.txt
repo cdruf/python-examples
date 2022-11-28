@@ -13,15 +13,16 @@ holidays
 # data connections
 PyYAML>=5.3.1
 pyodbc>=4.0.30
-openpyxl~=3.0.7
+openpyxl
 
 # data analysis
 pandas_profiling>=2.10
-seaborn~=0.11.2
+seaborn
 matplotlib
 plotly>=4.14
 
 # mapping
+shapely
 geopandas
 folium
 mapclassify
@@ -45,6 +46,6 @@ ortools
 PuLP
 
 # Simulation
-simpy~=4.0.1
+simpy
 
 xlsxwriter
