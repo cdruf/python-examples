@@ -2,12 +2,18 @@ import numpy as np
 from scipy.optimize import minimize, Bounds
 
 
+def my_non_linear_function(x: np.array):
+    assert x.shape[0] == 2
+    return x[0] * x[1]
+
+
 def obj(x):
-    return x.sum()
+    return my_non_linear_function(x)
 
 
 def c1(x):
-    return x.sum() - 5
+    """ sum(abs(x)) >= 5 """
+    return np.abs(x).sum() - 5
 
 
 sol = minimize(
