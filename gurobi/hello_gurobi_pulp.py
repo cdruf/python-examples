@@ -18,7 +18,9 @@ print(mdl.status)
 
 # Solve with GUROBI
 assert 'GUROBI' in solvers_list
-solver_gb = pl.getSolver('GUROBI')
+# solver_gb = pl.getSolver('GUROBI')
+solver_gb = pl.GUROBI()
+# solver_gb.buildSolverModel(mdl)  # deprecated
 mdl.solve(solver_gb)
 print(mdl.solverModel.status)  # 2 for optimal
 
