@@ -1,3 +1,7 @@
+from collections import defaultdict
+
+from typing import List, Dict, Tuple, Any
+
 import gurobipy as gp
 
 
@@ -45,7 +49,6 @@ def append_tupledicts(dicts: List[dict]):
     for dct in dicts:
         ret.update(dct)
     return gp.tupledict(ret)
-
 
 
 def group_dict_sum(dct: Dict, key_index: int):
