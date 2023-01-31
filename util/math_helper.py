@@ -1,16 +1,34 @@
 from typing import Mapping
-
+from collections import defaultdict
 import pandas as pd
 
-eps = 1e-6  # Numerical value for zero
+EPS = 1e-6  # Numerical value for zero
 
 
-def eq(x, y, tolerance=eps):
+def eq(x, y, tolerance=EPS):
     return abs(x - y) <= tolerance
 
 
 def is_binary(xs: pd.Series):
     return xs.apply(lambda x: eq(x, 0) or eq(x, 1)).all()
+
+
+def get_adjacency_lists_from_adjacency_matrix(matrix):
+    """
+    Calculates the adjacency lists
+    :param matrix: Square indicator matrix.
+    :return
+        ret1: key is the 1st dimension of the matrix.
+        ret2: key is the 2nd dimension of the matrix.
+    """
+    ret1 = defaultdict(list)
+    ret2 = defaultdict(list)
+    for i, x in enumerate(matrix):
+        for j, y in enumerate(x):
+            if eq(y,1):
+                ret1[i].append(j)
+                ret2[j].append(i)
+    return dict(ret1), dict(ret2)
 
 
 def get_image(x_maps_to_y: Mapping):

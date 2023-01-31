@@ -29,6 +29,13 @@ def dict_2d_to_tupledict(dct: dict):
                          for k2, val in inner.items()})
 
 
+def tupledict_to_2d_dict(dct: Dict[Tuple[Any, Any], Any]):
+    ret = defaultdict(dict)
+    for (k1, k2), val in dct.items():
+        ret[k1][k2] = val
+    return dict(ret)
+
+
 def append_tuplelists(lists: List[list]):
     return gp.tuplelist(reduce(lambda x, y: x + y, lists, []))
 
@@ -38,3 +45,18 @@ def append_tupledicts(dicts: List[dict]):
     for dct in dicts:
         ret.update(dct)
     return gp.tupledict(ret)
+
+
+
+def group_dict_sum(dct: Dict, key_index: int):
+    ret = defaultdict(float)
+    for k, v in dct.items():
+        ret[k[key_index]] += v
+    return dict(ret)
+
+
+def group_dict_sum_multi(dct: Dict, key_indices: List[int]):
+    ret = defaultdict(float)
+    for k, v in dct.items():
+        ret[tuple(k[idx] for idx in key_indices)] += v
+    return dict(ret)
