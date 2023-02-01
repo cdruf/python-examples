@@ -1,4 +1,4 @@
-from typing import Mapping
+from typing import Mapping, List, Any, Tuple, Dict
 from collections import defaultdict
 import pandas as pd
 
@@ -25,10 +25,23 @@ def get_adjacency_lists_from_adjacency_matrix(matrix):
     ret2 = defaultdict(list)
     for i, x in enumerate(matrix):
         for j, y in enumerate(x):
-            if eq(y,1):
+            if eq(y, 1):
                 ret1[i].append(j)
                 ret2[j].append(i)
     return dict(ret1), dict(ret2)
+
+
+def get_adjacency_lists_from_arcs(arcs: List[Tuple[Any, Any]]) -> Tuple[Dict[Any, List[Any]], Dict[Any, List[Any]]]:
+    """[(1, 2), (1, 3), (4, 3)] maps to
+    ({1: [2, 3], 4:[3]},
+    {2: [1], 3: [1, 4]})
+    """
+    ret_forwards = defaultdict(list)
+    ret_backwards = defaultdict(list)
+    for x, y in arcs:
+        ret_forwards[x].append(y)
+        ret_backwards[y].append(x)
+    return dict(ret_forwards), dict(ret_backwards)
 
 
 def get_image(x_maps_to_y: Mapping):
