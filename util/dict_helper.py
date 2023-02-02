@@ -1,6 +1,6 @@
 from collections import defaultdict
 from functools import reduce
-from typing import List, Dict, Tuple, TypeVar
+from typing import List, Dict, Tuple, TypeVar, Any
 
 import gurobipy as gp
 
@@ -8,6 +8,7 @@ import gurobipy as gp
 T = TypeVar('T')
 T1 = TypeVar('T1')
 T2 = TypeVar('T2')
+T3 = TypeVar('T3')
 
 
 def print_first_entries(dct, n=3, sep=',', sort_keys=False):
@@ -18,7 +19,11 @@ def print_first_entries(dct, n=3, sep=',', sort_keys=False):
     print(sep.join([f"{k} -> {v}" for k, v in tmp[:min(n, len(tmp))]]))
 
 
-def sum_2d_dict_by_dimension(dct, dim):
+def sum_2d_dict_values(dct: Dict[Any, Dict[Any, T]]) -> T:
+    return sum(sum(d.values()) for d in dct.values())
+
+
+def sum_2d_tupledict_by_dimension(dct: Dict[Tuple, T], dim):
     if dim == 1:
         keys = set(k for k, _ in dct)
         return {k: sum([val for (k1, _), val in dct.items() if k1 == k]) for k in keys}
@@ -43,6 +48,24 @@ def tupledict_to_2d_dict(dct: Dict[Tuple[T1, T2], T]) -> Dict[T1, Dict[T2, T]]:
     for (k1, k2), val in dct.items():
         ret[k1][k2] = val
     return dict(ret)
+
+
+def tupledict_to_2d_dict(dct: Dict[Tuple[T1, T2], T]) -> Dict[T1, Dict[T2, T]]:
+    ret = defaultdict(dict)
+    for (k1, k2), val in dct.items():
+        ret[k1][k2] = val
+    return dict(ret)
+
+
+def tupledict_to_3d_dict(dct: Dict[Tuple[T1, T2, T3], T]) -> Dict[T1, Dict[T2, Dict[T3, T]]]:
+    ret = {}
+    for (k1, k2, k3), val in dct.items():
+        if k1 not in ret:
+            ret[k1] = {}
+        if k2 not in ret[k1]:
+            ret[k1][k2] = {}
+        ret[k1][k2][k3] = val
+    return ret
 
 
 def append_tuplelists(lists: List[list]):
