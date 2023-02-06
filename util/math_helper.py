@@ -1,50 +1,23 @@
-from typing import Mapping, List, Any, Tuple, Dict
-from collections import defaultdict
+from typing import Mapping, List, Any, TypeVar
+
 import pandas as pd
+from scipy.stats import norm
+
+# Declare type variable
+T = TypeVar('T')
 
 EPS = 1e-6  # Numerical value for zero
 
 
-def eq(x, y, tolerance=EPS):
+def eq(x, y, tolerance=EPS) -> bool:
     return abs(x - y) <= tolerance
 
 
-def is_binary(xs: pd.Series):
+def is_binary(xs: pd.Series) -> bool:
     return xs.apply(lambda x: eq(x, 0) or eq(x, 1)).all()
 
 
-def get_adjacency_lists_from_adjacency_matrix(matrix):
-    """
-    Calculates the adjacency lists
-    :param matrix: Square indicator matrix.
-    :return
-        ret1: key is the 1st dimension of the matrix.
-        ret2: key is the 2nd dimension of the matrix.
-    """
-    ret1 = defaultdict(list)
-    ret2 = defaultdict(list)
-    for i, x in enumerate(matrix):
-        for j, y in enumerate(x):
-            if eq(y, 1):
-                ret1[i].append(j)
-                ret2[j].append(i)
-    return dict(ret1), dict(ret2)
-
-
-def get_adjacency_lists_from_arcs(arcs: List[Tuple[Any, Any]]) -> Tuple[Dict[Any, List[Any]], Dict[Any, List[Any]]]:
-    """[(1, 2), (1, 3), (4, 3)] maps to
-    ({1: [2, 3], 4:[3]},
-    {2: [1], 3: [1, 4]})
-    """
-    ret_forwards = defaultdict(list)
-    ret_backwards = defaultdict(list)
-    for x, y in arcs:
-        ret_forwards[x].append(y)
-        ret_backwards[y].append(x)
-    return dict(ret_forwards), dict(ret_backwards)
-
-
-def get_image(x_maps_to_y: Mapping):
+def get_image(x_maps_to_y: Mapping[Any, T]) -> List[T]:
     return list(set([y for x, y in x_maps_to_y.items()]))
 
 
@@ -70,3 +43,16 @@ def get_pre_images(x_maps_to_y: Mapping, Y: list = None):
     for x, y in x_maps_to_y.items():
         X_y[y].append(x)
     return X_y
+
+
+def loss_function_standard_normal(x: float) -> float:
+    return norm.pdf(x) - x * (1 - norm.cdf(x))
+
+
+def loss_function_normal(x: float, mu: float, sigma: float) -> float:
+    return sigma * loss_function_standard_normal((x - mu) / sigma)
+
+
+if __name__ == "__main__":
+    result = loss_function_normal(120, 100, 50)
+    print(result)  # 11.52 expected
