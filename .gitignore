@@ -108,5 +108,8 @@ ENV/
 # mypy
 .mypy_cache/
 
-# OS
+# OSX
 .DS_Store
+
+# Scribble file
+scribble.py

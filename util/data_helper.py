@@ -176,3 +176,15 @@ def to_excel_from_dfs(path: str, dfs: list, sheet_names: list):
         for idx, df in enumerate(dfs):
             sheet_name = sheet_names[idx]
             df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+
+def df_to_dict_key_tuple(df: pd.DataFrame, cols, idx=None):
+    if idx is not None:
+        df.set_index(idx)
+    return dict(zip(df.index, df[cols].to_records(index=False)))
+
+
+if __name__ == "__main__":
+    df_ = pd.DataFrame({'a': [1, 2], 'b': [3, 4], 'c': [5, 6]}).reset_index()
+    print(df_to_dict_key_tuple(df_, ['a', 'b']))
+    print(df_to_dict_key_tuple(df_, ['a', 'b'], idx='c'))

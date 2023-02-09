@@ -1,6 +1,6 @@
 from collections import defaultdict
 from functools import reduce
-from typing import List, Dict, Tuple, TypeVar, Any
+from typing import List, Dict, Tuple, TypeVar, Any, Mapping
 
 import gurobipy as gp
 
@@ -35,6 +35,7 @@ def sum_2d_tupledict_by_dimension(dct: Dict[Tuple, T], dim):
 
 
 def merge_sum_dicts(d1, d2):
+    """Alternative version with Counter"""
     return {k: d1.get(k, 0) + d2.get(k, 0) for k in set(d1) | set(d2)}
 
 
@@ -91,6 +92,13 @@ def group_dict_sum_multi(dct: Dict, key_indices: List[int]):
     for k, v in dct.items():
         ret[tuple(k[idx] for idx in key_indices)] += v
     return dict(ret)
+
+
+def map_keys(dct: Dict, mapping) -> Dict:
+    if callable(mapping):
+        return {mapping(k): v for k, v in dct.items()}
+    return {mapping[k]: v for k, v in dct.items()}
+
 
 
 class Tupledict:
