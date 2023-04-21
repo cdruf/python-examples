@@ -17,3 +17,17 @@ def get_positive_expr_values_int(dct, tolerance=0.001):
         if val > tolerance:
             ret[k] = round(val)
     return ret
+
+
+def get_binary_variable_values(var_dict, tolerance=0.001, only_ones=False):
+    ret = {}
+    for k, var in var_dict.items():
+        val = pl.value(var)
+        if abs(val - round(val)) > tolerance:
+            raise RuntimeError('Value not binary')
+        if only_ones:
+            if round(val) == 1:
+                ret[k] = round(val)
+        else:
+            ret[k] = round(val)
+    return ret

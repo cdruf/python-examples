@@ -1,5 +1,7 @@
 from collections import defaultdict
-from typing import List, Tuple, Any, Dict
+from typing import List, Tuple, Any, Dict, Iterable
+
+import matplotlib.pyplot as plt
 
 
 def get_adjacency_lists_from_adjacency_matrix(matrix, fill=True, eps=0.001):
@@ -44,3 +46,26 @@ def get_adjacency_lists_from_arcs(arcs: List[Tuple[Any, Any]]) -> Tuple[Dict[Any
         ret_forwards[x].append(y)
         ret_backwards[y].append(x)
     return dict(ret_forwards), dict(ret_backwards)
+
+
+def plot_graph(nodes: Dict[Any, Tuple[float, float]], edges: Iterable[Tuple[float, float]]):
+    """
+    Paint a graph.
+
+    Args:
+        nodes: Node names (keys) and their positions (values).
+        edges: List of edges.
+    """
+    xs, ys = zip(*nodes.values())
+    plt.scatter(xs, ys, s=50, alpha=0.5)
+    for idx, node in enumerate(nodes.keys()):
+        plt.text(xs[idx], ys[idx], node)
+    for i, j in edges:
+        plt.plot([nodes[i][0], nodes[j][0]], [nodes[i][1], nodes[j][1]], color='grey')
+    plt.show()
+
+
+if __name__ == '__main__':
+    nodes = {'a': (1, 2), 'b': (1, 7), 'c': (5, 3)}
+    edges = [('a', 'b'), ('b', 'c'), ('c', 'a')]
+    plot_graph(nodes, edges)

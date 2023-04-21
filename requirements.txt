@@ -21,6 +21,9 @@ seaborn
 matplotlib
 plotly>=4.14
 
+# Graphs
+networkx
+
 # mapping
 shapely
 geopandas
@@ -49,3 +52,5 @@ PuLP
 simpy
 
 xlsxwriter
+
+cplex

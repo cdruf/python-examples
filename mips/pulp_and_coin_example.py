@@ -1,32 +1,44 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Feb  2 12:59:14 2021
+Created in 2021
 
 @author: Christian Ruf
 """
 
 import pulp
 
-my_lp_problem = pulp.LpProblem("My_LP_Problem", pulp.LpMaximize)
+mdl = pulp.LpProblem("My_LP_Problem", pulp.LpMaximize)
 
 x = pulp.LpVariable('x', lowBound=0, cat='Continuous')
 y = pulp.LpVariable('y', lowBound=2, cat='Continuous')
 
 # Objective function
-my_lp_problem += 4 * x + 3 * y, "Z"
+mdl += 4 * x + 3 * y, "Z"
 
 # Constraints
-my_lp_problem += 2 * y <= 25 - x
-my_lp_problem += 4 * y >= 2 * x - 8
-my_lp_problem += y <= 2 * x - 5
+mdl += 2 * y + x <= 25, "c_1"
+mdl += x <= 5, "c_2"
+mdl += y <= 4, "c_3"
 
-print(my_lp_problem)
+print(mdl)
 
 
-my_lp_problem.solve()
+def solve():
+    mdl.solve()
+    print(pulp.LpStatus[mdl.status])
+    print(pulp.value(mdl.objective))
+    for variable in mdl.variables():
+        print("{} = {}".format(variable.name, variable.varValue))
 
-print(pulp.LpStatus[my_lp_problem.status])
-print(pulp.value(my_lp_problem.objective))
 
-for variable in my_lp_problem.variables():
-    print("{} = {}".format(variable.name, variable.varValue))
+solve()
+print("\n")
+
+# Drop constraint & re-solve
+del mdl.constraints['c_3']
+solve()
+print("\n")
+
+# Replace objective & re-solve
+mdl.objective = 2 * x + 2 * y
+solve()

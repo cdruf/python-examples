@@ -112,4 +112,4 @@ ENV/
 .DS_Store
 
 # Scribble file
-scribble.py
+logit_scribble.py

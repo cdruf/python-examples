@@ -1,9 +1,8 @@
 import math
-from functools import reduce
-from typing import List, Mapping
 
-import pandas as pd
 
+def euclidean(x1, y1, x2, y2) -> float:
+    return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
 
 def distance_haversine(lat1, lon1, lat2, lon2) -> float:
@@ -25,5 +24,3 @@ def distance_haversine(lat1, lon1, lat2, lon2) -> float:
         raise RuntimeError(f'Error in distance for {lat1}, {lon1}, {lat2}, {lon2})')
 
     return 1.852001 * 3443.8985 * math.acos(v)
-
-
