@@ -24,7 +24,7 @@ plotly>=4.14
 # Graphs
 networkx
 
-# mapping
+# Mapping
 shapely
 geopandas
 folium
@@ -40,10 +40,10 @@ pre-commit-hooks>=2.3.0
 pytest>=5.2.0
 pytest-cov>=2.8.1
 
-# machine learning
+# Machine learning
 scikit-learn
 
-# optimization
+# Optimization
 gurobipy
 ortools
 PuLP

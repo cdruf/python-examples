@@ -113,3 +113,7 @@ ENV/
 
 # Scribble file
 logit_scribble.py
+
+# IIS from gurobi
+*.ilp
+

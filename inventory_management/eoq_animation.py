@@ -1,12 +1,10 @@
-import math
-import os
-
 import pandas as pd
-from IPython import display
 from matplotlib import pyplot as plt
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, PillowWriter
 
 from inventory_management.economic_order_quantity import EOQ
+
+# %%
 
 eoqs = [EOQ(D=12000, A=a, v=1.0, r=0.1) for a in range(20, 101)]
 data = []
@@ -19,29 +17,6 @@ print(df.head())
 
 eoqs[0].plot()
 
-
-# %%
-
-# matplotlib.use('TkAgg')
-
-
-def get_xs_and_ys(eoq: EOQ):
-    order_cycles_per_year = math.ceil(1.0 / eoq.T)
-    xs = []
-    ys = []
-    days = 365 * eoq.T
-    for i in range(order_cycles_per_year):
-        xs.append(i * days)
-        ys.append(eoq.Q)
-        xs.append((i + 1) * days)
-        ys.append(0)
-    return xs, ys
-
-
-xs, ys = get_xs_and_ys(eoqs[0])
-print(len(xs))
-print(len(ys))
-
 # %%
 
 # Create new Figure and an Axes which fills it.
@@ -51,32 +26,22 @@ ax.set_xlim(0, 365)
 # ax.set_xticks([])
 ax.set_ylim(0, df['EOQ'].max())
 # ax.set_yticks([])
-ln, = ax.plot(xs, ys)
+ln, = ax.plot(*eoqs[0].get_xs_and_ys())
 
 
 def update(frame):
     print(frame)
     eoq = eoqs[frame]
-    xs, ys = get_xs_and_ys(eoq)
+    xs, ys = eoq.get_xs_and_ys()
     ln.set_data(xs, ys)
     return ln,
 
 
 # animation = FuncAnimation(fig, update, interval=10)
 animation = FuncAnimation(fig, update, frames=range(len(eoqs)), blit=True)
-plt.show()
-
-# %%
-
-print(os.getcwd())
+# plt.show()
 
 print("Save video to disk")
-animation.save("data/video.mp4")
+writer = PillowWriter()
+animation.save("data/eoq.gif", writer=writer)
 print("Video saved")
-
-# %%
-video = animation.to_html5_video()
-html = display.HTML(video)
-display.display(html)
-
-plt.close()

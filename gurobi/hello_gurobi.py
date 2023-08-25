@@ -2,32 +2,30 @@
 # -*- coding: utf-8 -*-
 """
 """
-import sys
-from gurobipy import *
+import gurobipy as gb
+from gurobipy import GRB
 
-try:
 
-    # Create a new model
-    m = Model("mini_mip")
+def mycallback(model, where):
+    if where == GRB.Callback.MIPSOL:
+        print("\n\n*** New solution ***\n")
 
-    # Create variables
-    x = m.addVar(vtype=GRB.BINARY, name="x")
 
-    # Set objective
-    m.setObjective(x, GRB.MAXIMIZE)
+# Create a new model
+m = gb.Model("mini_mip")
 
-    # Add constraint: x <= 4
-    m.addConstr(x <= 4, "c0")
+# Create variables
+x = m.addVar(vtype=GRB.BINARY, name="x")
 
-    m.optimize()
+# Set objective
+m.setObjective(x, GRB.MAXIMIZE)
 
-    for v in m.getVars():
-        print('%s %g' % (v.varName, v.x))
+# Add constraint: x <= 4
+m.addConstr(x <= 4, "c0")
 
-    print('Obj: %g' % m.objVal)
+m.optimize(callback=mycallback)
 
-except GurobiError as e:
-    print('Error code ' + str(e.errno) + ": " + str(e))
+for v in m.getVars():
+    print('%s %g' % (v.varName, v.x))
 
-except AttributeError:
-    print('Encountered an attribute error')
+print('Obj: %g' % m.objVal)

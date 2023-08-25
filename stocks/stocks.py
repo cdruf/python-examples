@@ -198,7 +198,7 @@ df2.reset_index().plot(kind='line', style='.', markersize=2, x='index', y='open'
 df2.reset_index().plot(kind='line', style='-', linewidth=1, x='index', y='mv-50', ax=ax)
 df2.reset_index().plot(kind='line', style='-', linewidth=3, x='index', y='lin-reg', ax=ax)
 
-# plotly does not work in spyder
+# charting does not work in spyder
 
 # ohlc
 

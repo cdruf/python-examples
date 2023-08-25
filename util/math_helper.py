@@ -1,4 +1,5 @@
-from typing import Mapping, List, Any, TypeVar
+from collections import defaultdict
+from typing import Mapping, List, Any, TypeVar, Set
 
 import pandas as pd
 from scipy.stats import norm
@@ -43,6 +44,20 @@ def get_pre_images(x_maps_to_y: Mapping, Y: list = None):
     for x, y in x_maps_to_y.items():
         X_y[y].append(x)
     return X_y
+
+
+def reverse_n_to_m(m: Mapping[Any, Set]):
+    """
+    Given is mapping m: X --> Y where Y is a set of sets.
+    Let Z = union of all Y.
+    Create the mapping ret: Z --> W where W is a set of sets, defined by
+    ret(z) = w = {x | z in m(x)}.
+    """
+    expanded = [(x, y) for x, ys in m.items() for y in ys]
+    ret = defaultdict(set)
+    for x, y in expanded:
+        ret[y].add(x)
+    return dict(ret)
 
 
 def loss_function_standard_normal(x: float) -> float:

@@ -21,7 +21,7 @@ class EOQ:
     def print(self):
         print(f"EOQ = {self.Q:.1f}, order interval = {self.T:.1f}")
 
-    def plot(self):
+    def get_xs_and_ys(self):
         order_cycles_per_year = math.ceil(1.0 / self.T)
         xs = []
         ys = []
@@ -31,5 +31,9 @@ class EOQ:
             ys.append(self.Q)
             xs.append((i + 1) * days)
             ys.append(0)
+        return xs, ys
+
+    def plot(self):
+        xs, ys = self.get_xs_and_ys()
         plt.plot(xs, ys)
         plt.show()
