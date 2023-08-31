@@ -45,8 +45,7 @@ import os
 print(os.getcwd())
 fig.write_html("../data/plotly_export.html", full_html=False, include_plotlyjs=False)
 """
-Diese Zeile vor dem exportierten Stuff hinzufügen:
+Either export including the plotly JavaScript or without. 
+If without, add this line to the website:
 <script src="https://cdn.plot.ly/plotly-2.25.2.min.js" charset="utf-8"></script>
-
-Funktion zum Exportieren:
-fig.write_html("export.html", full_html=False, include_plotlyjs=False)"""
+"""

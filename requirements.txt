@@ -40,7 +40,8 @@ pre-commit-hooks>=2.3.0
 pytest>=5.2.0
 pytest-cov>=2.8.1
 
-# Machine learning
+# Statistics & machine learning
+statsmodels
 scikit-learn
 
 # Optimization

@@ -6,9 +6,15 @@ Created on 2023-08-24
 import pulp as pl
 from gurobipy import GRB
 
+external_var_used_by_callback = 99
+
 
 # Define callback
 def mycallback(model, where):
+    global external_var_used_by_callback
+    print(external_var_used_by_callback)
+    external_var_used_by_callback += 1
+
     if where == GRB.Callback.MIP:
         # General MIP callback
         nodecnt = model.cbGet(GRB.Callback.MIP_NODCNT)
@@ -34,7 +40,7 @@ def mycallback(model, where):
             model.terminate()
 
 
-# Build model withb PuLP
+# Build model with PuLP
 
 mdl = pl.LpProblem("MyLP", pl.LpMaximize)
 xs = pl.LpVariable.dicts('x', indices=range(2), cat=pl.LpInteger)
