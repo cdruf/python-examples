@@ -14,7 +14,7 @@ for eoq in eoqs.values():
         q_max = eoq.Q
 
 # Create figure
-fig = go.Figure(layout_yaxis_range=[0, q_max])
+fig = go.Figure(layout_yaxis_range=[0, q_max], layout_xaxis_range=[0, 365])
 
 idx_map = {}
 idx = 0
