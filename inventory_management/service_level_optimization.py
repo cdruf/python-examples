@@ -15,37 +15,13 @@ import plotly.graph_objects as go
 from matplotlib import pyplot as plt
 from scipy.stats import norm
 
-
-@dataclass
-class Data:
-    demand_mu: float
-    demand_sig: float
-    fixed_replenishment_cost: float
-    backlog_cost: float
-    holding_cost: float
-    lead_time: float
+from inventory_management.inventory_data import Data
+from inventory_management.loss_functions import units_short
 
 
 def safety_stock(z, sig):
     """z = safety factor. """
     return z * sig
-
-
-def loss_function_standard_normal(x: float) -> float:
-    """
-    :param x: Safety factor.
-    """
-    return norm.pdf(x) - x * (1.0 - norm.cdf(x))
-
-
-def loss_function_normal(x: float, mu: float, sigma: float) -> float:
-    if sigma == 0:
-        return max(mu - x, 0.0)
-    return sigma * loss_function_standard_normal((x - mu) / sigma)
-
-
-def units_short(demand_sig, z):
-    return demand_sig * loss_function_standard_normal(z)
 
 
 @dataclass
@@ -84,6 +60,8 @@ class RsPolicy:
         return self.cost_per_review_period(z) / self.R
 
     def get_optimal_alpha(self):
+        if self.data.backlog_cost < 0.000001:
+            return 0.0
         return 1.0 - self.data.holding_cost * self.R / self.data.backlog_cost
 
 
@@ -124,9 +102,9 @@ def create_dynamic_plotly_chart():
 
     fig = go.Figure(layout_yaxis_range=[min_y, max_y], layout_xaxis_range=[min_alpha, max_alpha])
 
-    idx_map = {}  # index -> b
+    idx_map = {}  # b -> index
     idx = 0
-    b_map = {}  # b -> index
+    b_map = {}  # index -> b
 
     # Add traces, one for each slider step
     for b in bs:
@@ -142,7 +120,8 @@ def create_dynamic_plotly_chart():
             go.Scatter(
                 visible=False,
                 line=dict(color="#00CED1", width=6),
-                name=f"Cost per backorder = {b}",
+                # name=f"Cost per backorder = {b}",
+                name="Total costs",
                 x=alphas,
                 y=costs_per_period))
 
@@ -156,7 +135,7 @@ def create_dynamic_plotly_chart():
                 visible=False,
                 mode='lines',
                 line=dict(color="#0A1335", width=1),
-                name=f"Opt. z",
+                name=f"Optimum",
                 x=[alpha_opt, alpha_opt],
                 y=[min_y, max_y]))
 
@@ -174,7 +153,8 @@ def create_dynamic_plotly_chart():
         step_config = dict(
             method="update",
             args=[{"visible": visible_mask},
-                  {"title": f"Backorder cost = {b}"}],
+                  # {"title": f"Backorder cost = {b}"}
+                  ],
             label=f"{b}",
         )
         backorder_cost_slider.append(step_config)
@@ -186,9 +166,18 @@ def create_dynamic_plotly_chart():
         steps=backorder_cost_slider
     )]
 
+    tickvals = [round(i / 10, 1) for i in range(11)]
+    ticktext = [f'{val * 100:.0f}%' for val in tickvals]
     fig.update_layout(
         sliders=sliders,
-        showlegend=False,
+        xaxis_title="Service level",
+        yaxis_title="Total costs",
+        showlegend=True,
+        xaxis=dict(
+            tickmode='array',
+            tickvals=tickvals,
+            ticktext=ticktext
+        )
     )
 
     fig.show()

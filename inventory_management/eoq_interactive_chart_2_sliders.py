@@ -1,3 +1,7 @@
+"""
+This work is unfinished. There seems to be no easy solution to do this with plotly, which is surprising.  
+"""
+
 import numpy as np
 import plotly.graph_objects as go
 
@@ -50,7 +54,7 @@ for idx in range(len(fig.data)):
         method="update",
         args=[{"visible": visible_mask},
               {"title": f"Fixed cost = {A}, unit variable cost = {v}"}],
-        #label=f"{eoqs[(idx + A_min, v_min)].A}",
+        # label=f"{eoqs[(idx + A_min, v_min)].A}",
     )
     fixed_cost_slider_steps.append(step_config)
 

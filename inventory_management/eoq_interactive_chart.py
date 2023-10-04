@@ -30,7 +30,8 @@ for fixed_cost in np.arange(A_min, A_max + 1, 1):
         go.Scatter(
             visible=False,
             line=dict(color="#00CED1", width=6),
-            name=f"A = {fixed_cost}",
+            #name=f"A = {fixed_cost}",
+            name="Cycle stock",
             x=xs,
             y=ys))
 
@@ -46,7 +47,8 @@ for idx in range(len(fig.data)):
     step_config = dict(
         method="update",
         args=[{"visible": visible_mask},
-              {"title": f"Fixed cost = {A}"}],
+              # {"title": f"Fixed cost = {A}"}
+              ],
         label=f"{A}",
     )
     fixed_cost_slider_steps.append(step_config)
@@ -59,7 +61,10 @@ sliders = [dict(
 )]
 
 fig.update_layout(
-    sliders=sliders
+    sliders=sliders,
+    xaxis_title="Days of year",
+    yaxis_title="On-hand inventory",
+    showlegend=True
 )
 
 fig.show()

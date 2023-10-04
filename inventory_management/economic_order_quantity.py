@@ -3,16 +3,24 @@ from dataclasses import dataclass, field
 
 from matplotlib import pyplot as plt
 
+from inventory_management.inventory_data import Data
+
 
 @dataclass
 class EOQ:
-    D: int
+    D: int | float
     A: float
     v: float
     r: float
 
     T: float = field(init=False)
     Q: float = field(init=False)
+
+    @classmethod
+    def from_data_object(cls, data: Data, r=0.1):
+        """r is used to get v from h."""
+        ret = cls(data.demand_mu, data.fixed_replenishment_cost, v=data.holding_cost / r, r=r)
+        return ret
 
     def compute(self):
         self.Q = math.sqrt(2 * self.A * self.D / (self.v * self.r))
