@@ -117,3 +117,7 @@ logit_scribble.py
 # IIS from gurobi
 *.ilp
 
+# Data folder
+data/Karsana.xlsx
+data/eoq.gif
+
