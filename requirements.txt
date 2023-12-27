@@ -1,19 +1,28 @@
 # core library requirements
 pip>=21
-pandas
+pandas>=2.1.4
 pandasql~=0.7.3
 tabulate>=0.8.7
-numpy
-scipy
+numpy>=1.26.2
+scipy>=1.11.4
 tqdm>=4.51.0
 numba
 holidays
-
+pre-commit>=2.6.0
+flake8>=3.7.8
+gitlint>=0.12.0
+jupyter>=1.0.0
+jupytext>=1.3.3
+nbval>=0.9.3
+pre-commit-hooks>=2.3.0
+pytest>=5.2.0
+pytest-cov>=2.8.1
 
 # data connections
 PyYAML>=5.3.1
 pyodbc>=4.0.30
 openpyxl
+xlsxwriter
 
 # data analysis
 pandas_profiling>=2.10
@@ -30,16 +39,6 @@ geopandas
 folium
 mapclassify
 
-pre-commit>=2.6.0
-flake8>=3.7.8
-gitlint>=0.12.0
-jupyter>=1.0.0
-jupytext>=1.3.3
-nbval>=0.9.3
-pre-commit-hooks>=2.3.0
-pytest>=5.2.0
-pytest-cov>=2.8.1
-
 # Statistics & machine learning
 statsmodels
 scikit-learn
@@ -48,10 +47,10 @@ scikit-learn
 gurobipy
 ortools
 PuLP
+cplex
 
 # Simulation
 simpy
 
-xlsxwriter
-
-cplex
+# Web
+Flask
