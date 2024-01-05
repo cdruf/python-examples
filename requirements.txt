@@ -54,3 +54,4 @@ simpy
 
 # Web
 Flask
+pydantic
