@@ -48,6 +48,7 @@ gurobipy
 ortools
 PuLP
 cplex
+gekko
 
 # Simulation
 simpy

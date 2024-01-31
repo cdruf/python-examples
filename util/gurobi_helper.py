@@ -110,7 +110,7 @@ def get_rhs_ranges(model):
         columns=['Constraint', 'RHS', 'Allowable increase', 'Allowable decrease'])
 
 
-def identify_constraints_with_extreme_coefficients(mdl: gp.Model, lb=10e-4, ub=10e9):
+def identify_constraints_with_extreme_coefficients(mdl: grb.Model, lb=10e-4, ub=10e9):
     """Helper function to improve numeric properties of the model.
 
     Function is slow and is therefore only useful for debugging."""
@@ -128,7 +128,7 @@ def identify_constraints_with_extreme_coefficients(mdl: gp.Model, lb=10e-4, ub=1
                 print(f"WARNING: extreme coefficient for {c_name}, {v_name}, value = {coefficient}")
 
 
-def identify_rhs_with_extreme_value(mdl: gp.Model, lb=1e-4, ub=1e4):
+def identify_rhs_with_extreme_value(mdl: grb.Model, lb=1e-4, ub=1e4):
     for c in mdl.getConstrs():
         val = c.rhs
         if (val != 0.0 and abs(val) < lb) or abs(val) > ub:
