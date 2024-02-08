@@ -26,6 +26,6 @@ m.addConstr(x <= 4, "c0")
 m.optimize(callback=mycallback)
 
 for v in m.getVars():
-    print('%s %g' % (v.varName, v.x))
+    print('%s %g' % (v.varName, v.s))
 
 print('Obj: %g' % m.objVal)

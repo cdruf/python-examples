@@ -45,7 +45,7 @@ try:
     # Print results
     print('\nSolution')
     for v in model.getVars():
-        print('%s %g' % (v.varName, v.x))
+        print('%s %g' % (v.varName, v.s))
     print('Obj: %g' % model.objVal)
     
     # LP-Relaxation
@@ -57,7 +57,7 @@ try:
     
     print('\nvar \t val \t RC')
     for v in model.getVars():
-        print('%s \t %g \t %g' % (v.varName, v.x, v.rc))
+        print('%s \t %g \t %g' % (v.varName, v.s, v.rc))
     
     print('\nconstr \t slack or surplus \t dual prices')
     for c in model.getConstrs():

@@ -160,7 +160,7 @@ print('\nSolution')
 print('Obj: %g' % model.objVal)
 for i in range(A):
     for t in range(W[i].E, W[i].L+1):
-        if x[key(i,t)].x == 1:
+        if x[key(i,t)].s == 1:
             print("Activity " + str(i) + " is performed in period " + str(t))
 
 

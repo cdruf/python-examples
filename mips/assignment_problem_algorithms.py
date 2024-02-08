@@ -180,8 +180,8 @@ def solve_model(timeout_sec=60):
     print('Obj: %g' % model.objVal)
     for j in range(n):
         for i in range(m):
-            if x[i, j].x > 0.001:
-                print("x_%d,%d = %f" % (i, j, x[i, j].x))
+            if x[i, j].s > 0.001:
+                print("x_%d,%d = %f" % (i, j, x[i, j].s))
 
     # return optimal value and computational time in secs
     return (model.status, 
