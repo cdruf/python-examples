@@ -1,4 +1,6 @@
 """
+Needs at least PuLP 2.8.0 to work. Does not work with PuLP 2.7.0.
+
 Created on 2023-02-27
 @author: Christian Ruf
 """
@@ -18,14 +20,17 @@ solver.buildSolverModel(mdl)
 
 x0 = mdl.solverModel.getVarByName('x_0')
 x1 = mdl.solverModel.getVarByName('x_1')
-print(x0.Start)
-print(x1.Start)
+print("Default start values")
+print(f"x0.Start = {x0.Start}")
+print(f"x1.Start = {x1.Start}")
 
+print("Set start values")
 x0.Start = 1
 x1.setAttr('Start', 0)
-mdl.solverModel.update()
-print(x0.Start)
-print(x1.Start)
+mdl.solverModel.update()  # without the update the new start values are not visible (they are used either way)
+print("Start values")
+print(f"x0.Start = {x0.Start}")
+print(f"x1.Start = {x1.Start}")
 
 mdl.solve(solver)
 

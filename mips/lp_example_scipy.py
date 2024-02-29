@@ -10,4 +10,3 @@ A_ub = np.array([[2, 1],
 res = linprog(c=c, A_ub=A_ub, b_ub=b_ub, method='highs')
 
 print(res)
-

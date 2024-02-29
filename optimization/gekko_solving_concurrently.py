@@ -1,0 +1,111 @@
+"""
+Example that shows how to solve a problem with all 3 solvers in parallel using threading_and_processes.
+Depending on the problem characteristics the performance of the solvers differs greatly.
+Therefore, it is reasonable to try them all and see which one is fasted.
+"""
+import multiprocessing
+from multiprocessing.process import BaseProcess
+from time import time
+
+import numpy as np
+from gekko import GEKKO
+
+
+def get_model(coefficients):
+    n = len(coefficients)
+    m = GEKKO(remote=False)
+    variable_i = [m.Var(value=0, lb=0.0, ub=100.0, name=f"x_{i}") for i in range(n)]
+    objective_expression = m.sum([coefficients[i] * variable_i[i] for i in range(n)])
+    m.my_obj = objective_expression
+    m.Maximize(objective_expression)
+    m.Equation(m.sum(variable_i) <= 50.0)
+    return m
+
+
+def solve_with_apopt(coefficients, success: multiprocessing.Event = None):
+    print("Calling APOPT ...")
+    start = time()
+    m = get_model(coefficients)
+    m.options.SOLVER = 1
+    m.solve(disp=False)
+    duration_sec = time() - start
+    print(f"APOPT solved model in {duration_sec:1.2f} seconds. "
+          f"Objective = {m.my_obj.VALUE[0]:4.2f}")
+    if success is not None:
+        success.set()
+
+
+def solve_with_bpopt(coefficients, success: multiprocessing.Event = None):
+    print("Calling BPOPT ...")
+    start = time()
+    m = get_model(coefficients)
+    m.options.SOLVER = 2
+    m.solve(disp=False)
+    duration_sec = time() - start
+    print(f"BPOPT solved model in {duration_sec:1.2f} seconds. "
+          f"Objective = {m.my_obj.VALUE[0]:4.2f}")
+    if success is not None:
+        success.set()
+
+
+def solve_with_ipopt(coefficients, success: multiprocessing.Event = None):
+    print("Calling IPOPT ...")
+    start = time()
+    m = get_model(coefficients)
+    m.options.SOLVER = 3
+    m.solve(disp=False)
+    duration_sec = time() - start
+    print(f"IPOPT solved model in {duration_sec:1.2f} seconds. "
+          f"Objective = {m.my_obj.VALUE[0]:4.2f}")
+    if success is not None:
+        success.set()
+
+
+def end_process(p: BaseProcess):
+    if p.is_alive():  # => the thread is still active
+        print(f"Process {p.name} still running => terminate it")
+        p.terminate()  # may not work if process is stuck for good
+        p.join()  # must be called after terminate or the process remains alive
+        if p.is_alive():
+            print("Process could not be terminated => kill it")
+            p.kill()  # works for sure, no chance for process to finish nicely however
+            p.join()
+    assert not p.is_alive()
+
+
+if __name__ == "__main__":
+    # Create data
+    n = 10
+    coefficients = np.random.rand(n)
+
+    # Create the processes to solve
+    p1 = multiprocessing.Process(target=solve_with_apopt, args=(coefficients,))
+    p2 = multiprocessing.Process(target=solve_with_bpopt, args=(coefficients,))
+    p3 = multiprocessing.Process(target=solve_with_ipopt, args=(coefficients,))
+
+    # Start processes
+    p1.start()
+    p2.start()
+    p3.start()
+
+    # Wait for all processes to finish
+    p1.join(15)
+    p2.join(15)
+    p3.join(15)
+    assert not p1.is_alive()
+    assert not p2.is_alive()
+    assert not p3.is_alive()
+
+    # Now we do the same thing, but use an event to terminate after we have received the 1st result
+    print("\n\n\n")
+    success = multiprocessing.Event()
+    p1 = multiprocessing.Process(target=solve_with_apopt, args=(coefficients, success), name="AP")
+    p2 = multiprocessing.Process(target=solve_with_bpopt, args=(coefficients, success), name="BP")
+    p3 = multiprocessing.Process(target=solve_with_ipopt, args=(coefficients, success), name="IP")
+    p1.start()
+    p2.start()
+    p3.start()
+    success.wait()
+    end_process(p1)
+    end_process(p2)
+    end_process(p3)
