@@ -11,6 +11,9 @@ import numpy as np
 from gekko import GEKKO
 
 
+# Note: this script is called every time a subprocess is created
+
+
 def get_model(coefficients):
     n = len(coefficients)
     m = GEKKO(remote=False)
@@ -22,7 +25,7 @@ def get_model(coefficients):
     return m
 
 
-def solve_with_apopt(coefficients, success: multiprocessing.Event = None):
+def solve_apopt(coefficients, success: multiprocessing.Event = None, solutions=None):
     print("Calling APOPT ...")
     start = time()
     m = get_model(coefficients)
@@ -31,11 +34,13 @@ def solve_with_apopt(coefficients, success: multiprocessing.Event = None):
     duration_sec = time() - start
     print(f"APOPT solved model in {duration_sec:1.2f} seconds. "
           f"Objective = {m.my_obj.VALUE[0]:4.2f}")
+    if solutions is not None:
+        solutions.put("AP")  # We could add an actual solution here
     if success is not None:
         success.set()
 
 
-def solve_with_bpopt(coefficients, success: multiprocessing.Event = None):
+def solve_bpopt(coefficients, success: multiprocessing.Event = None, solutions=None):
     print("Calling BPOPT ...")
     start = time()
     m = get_model(coefficients)
@@ -44,11 +49,13 @@ def solve_with_bpopt(coefficients, success: multiprocessing.Event = None):
     duration_sec = time() - start
     print(f"BPOPT solved model in {duration_sec:1.2f} seconds. "
           f"Objective = {m.my_obj.VALUE[0]:4.2f}")
+    if solutions is not None:
+        solutions.put("BP")  # We could add an actual solution here
     if success is not None:
         success.set()
 
 
-def solve_with_ipopt(coefficients, success: multiprocessing.Event = None):
+def solve_ipopt(coefficients, success: multiprocessing.Event = None, solutions=None):
     print("Calling IPOPT ...")
     start = time()
     m = get_model(coefficients)
@@ -57,6 +64,8 @@ def solve_with_ipopt(coefficients, success: multiprocessing.Event = None):
     duration_sec = time() - start
     print(f"IPOPT solved model in {duration_sec:1.2f} seconds. "
           f"Objective = {m.my_obj.VALUE[0]:4.2f}")
+    if solutions is not None:
+        solutions.put("IP")  # We could add an actual solution here
     if success is not None:
         success.set()
 
@@ -79,9 +88,9 @@ if __name__ == "__main__":
     coefficients = np.random.rand(n)
 
     # Create the processes to solve
-    p1 = multiprocessing.Process(target=solve_with_apopt, args=(coefficients,))
-    p2 = multiprocessing.Process(target=solve_with_bpopt, args=(coefficients,))
-    p3 = multiprocessing.Process(target=solve_with_ipopt, args=(coefficients,))
+    p1 = multiprocessing.Process(target=solve_apopt, args=(coefficients,))
+    p2 = multiprocessing.Process(target=solve_bpopt, args=(coefficients,))
+    p3 = multiprocessing.Process(target=solve_ipopt, args=(coefficients,))
 
     # Start processes
     p1.start()
@@ -99,9 +108,10 @@ if __name__ == "__main__":
     # Now we do the same thing, but use an event to terminate after we have received the 1st result
     print("\n\n\n")
     success = multiprocessing.Event()
-    p1 = multiprocessing.Process(target=solve_with_apopt, args=(coefficients, success), name="AP")
-    p2 = multiprocessing.Process(target=solve_with_bpopt, args=(coefficients, success), name="BP")
-    p3 = multiprocessing.Process(target=solve_with_ipopt, args=(coefficients, success), name="IP")
+    solutions = multiprocessing.Queue()
+    p1 = multiprocessing.Process(target=solve_apopt, args=(coefficients, success, solutions), name="AP")
+    p2 = multiprocessing.Process(target=solve_bpopt, args=(coefficients, success, solutions), name="BP")
+    p3 = multiprocessing.Process(target=solve_ipopt, args=(coefficients, success, solutions), name="IP")
     p1.start()
     p2.start()
     p3.start()
@@ -109,3 +119,5 @@ if __name__ == "__main__":
     end_process(p1)
     end_process(p2)
     end_process(p3)
+    while not solutions.empty():
+        print(f"Solution: {solutions.get()}")
