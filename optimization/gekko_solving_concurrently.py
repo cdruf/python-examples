@@ -4,8 +4,8 @@ Depending on the problem characteristics the performance of the solvers differs 
 Therefore, it is reasonable to try them all and see which one is fasted.
 """
 import multiprocessing
+import time
 from multiprocessing.process import BaseProcess
-from time import time
 
 import numpy as np
 from gekko import GEKKO
@@ -27,11 +27,15 @@ def get_model(coefficients):
 
 def solve_apopt(coefficients, success: multiprocessing.Event = None, solutions=None):
     print("Calling APOPT ...")
-    start = time()
+    start = time.time()
+
+    # Artificial delay
+    time.sleep(10)
+
     m = get_model(coefficients)
     m.options.SOLVER = 1
     m.solve(disp=False)
-    duration_sec = time() - start
+    duration_sec = time.time() - start
     print(f"APOPT solved model in {duration_sec:1.2f} seconds. "
           f"Objective = {m.my_obj.VALUE[0]:4.2f}")
     if solutions is not None:
@@ -42,11 +46,15 @@ def solve_apopt(coefficients, success: multiprocessing.Event = None, solutions=N
 
 def solve_bpopt(coefficients, success: multiprocessing.Event = None, solutions=None):
     print("Calling BPOPT ...")
-    start = time()
+    start = time.time()
+
+    # Artificial delay
+    time.sleep(5)
+
     m = get_model(coefficients)
     m.options.SOLVER = 2
     m.solve(disp=False)
-    duration_sec = time() - start
+    duration_sec = time.time() - start
     print(f"BPOPT solved model in {duration_sec:1.2f} seconds. "
           f"Objective = {m.my_obj.VALUE[0]:4.2f}")
     if solutions is not None:
@@ -57,11 +65,15 @@ def solve_bpopt(coefficients, success: multiprocessing.Event = None, solutions=N
 
 def solve_ipopt(coefficients, success: multiprocessing.Event = None, solutions=None):
     print("Calling IPOPT ...")
-    start = time()
+    start = time.time()
+
+    # Small artificial delay => this one will be fastest
+    time.sleep(1)
+
     m = get_model(coefficients)
     m.options.SOLVER = 3
     m.solve(disp=False)
-    duration_sec = time() - start
+    duration_sec = time.time() - start
     print(f"IPOPT solved model in {duration_sec:1.2f} seconds. "
           f"Objective = {m.my_obj.VALUE[0]:4.2f}")
     if solutions is not None:
