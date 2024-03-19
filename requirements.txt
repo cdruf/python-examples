@@ -24,11 +24,12 @@ pyodbc
 openpyxl
 xlsxwriter
 
-# data analysis
+# data analysis / processing
 pandas_profiling
 seaborn
 matplotlib
 plotly
+pyspark
 
 # Graphs
 networkx
