@@ -2,7 +2,7 @@ import json
 
 import pydeck
 
-f = open("./vancouver-blocks.json")
+f = open("../data/vancouver-blocks.json")
 data_geojson = json.load(f)
 
 INITIAL_VIEW_STATE = pydeck.ViewState(

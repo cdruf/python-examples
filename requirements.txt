@@ -39,6 +39,7 @@ shapely
 geopandas
 folium
 mapclassify
+pydeck
 
 # Statistics & machine learning
 statsmodels
@@ -57,3 +58,6 @@ simpy
 # Web
 Flask
 pydantic
+
+# GUI
+PyQt5
