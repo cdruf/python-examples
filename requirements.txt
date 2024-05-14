@@ -17,6 +17,7 @@ nbval
 pre-commit-hooks
 pytest
 pytest-cov
+sortedcontainers
 
 # data connections
 PyYAML
@@ -61,3 +62,5 @@ pydantic
 
 # GUI
 PyQt5
+
+setuptools
