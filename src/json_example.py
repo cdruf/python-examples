@@ -13,5 +13,5 @@ df2 = pd.DataFrame({'c': [9, 8], 'd': [7, 6]})
 dct1 = df1.to_dict()  # any orientation
 dct2 = df2.to_dict()
 response = {"message": "success", "payload": {'table1': dct1, 'table2': dct2}}
-json = json.dumps(response, indent=4)
-print(json)
+ret = json.dumps(response, indent=4)
+print(ret)
