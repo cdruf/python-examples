@@ -1,6 +1,6 @@
 from collections import defaultdict
 from functools import reduce
-from typing import List, Dict, Tuple, TypeVar, Any, Mapping, Set
+from typing import List, Dict, Tuple, TypeVar, Any, Set
 
 import gurobipy as gp
 import numpy as np
@@ -40,6 +40,16 @@ def group_tupledict_sum(dct: Dict[Tuple, Any], key_index: int):
     for k, v in dct.items():
         ret[k[key_index]] += v
     return dict(ret)
+
+
+def group_tupledict_mean(dct: Dict[Tuple, float | int], key_index: int):
+    """Group the tuple-dictionary by one particular index of the key-tuples and calculate the group averages."""
+    ret = defaultdict(float)
+    counts = defaultdict(int)
+    for k, v in dct.items():
+        ret[k[key_index]] += v
+        counts[k[key_index]] += 1
+    return {k: v / counts[k] for k, v in ret.items()}
 
 
 def group_tupledict_multi_sum(dct: Dict, key_indices: List[int]):
