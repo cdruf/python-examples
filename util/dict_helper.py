@@ -167,3 +167,35 @@ class Tupledict:
             raise ValueError(f"Number of arguments must either be zero or equal to the number of dimensions {self.dim}")
 
         return sum(v for k, v in self.dct.items() if True)  # TODO: idea: overwrite comparison
+
+
+def get_all_slices_2d(dtc_ij: Dict[Tuple, float]):
+    ret_i: Dict[Tuple, float] = defaultdict(float)
+    ret_j: Dict[Tuple, float] = defaultdict(float)
+    ret = 0.0
+    for (i, j), v in dtc_ij.items():
+        ret_i[i] += v
+        ret_j[j] += v
+        ret += v
+    return dict(ret_i), dict(ret_j), ret
+
+
+def get_all_slices_3d(dtc_ijk: Dict[Tuple, float | int], dtype=float):
+    ret_ij: Dict[Tuple, dtype] = defaultdict(dtype)
+    ret_ik: Dict[Tuple, dtype] = defaultdict(dtype)
+    ret_jk: Dict[Tuple, dtype] = defaultdict(dtype)
+    ret_i: Dict[Tuple, dtype] = defaultdict(dtype)
+    ret_j: Dict[Tuple, dtype] = defaultdict(dtype)
+    ret_k: Dict[Tuple, dtype] = defaultdict(dtype)
+    ret = 0.0
+    for (i, j, k), v in dtc_ijk.items():
+        ret_ij[(i, j)] += v
+        ret_ik[(i, k)] += v
+        ret_jk[(j, k)] += v
+        ret_i[i] += v
+        ret_j[j] += v
+        ret_k[k] += v
+        ret += v
+    return (dict(ret_ij), dict(ret_ik), dict(ret_jk),
+            dict(ret_i), dict(ret_j), dict(ret_k),
+            ret)
