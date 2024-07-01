@@ -35,7 +35,7 @@ def sum_2d_tupledict_by_dimension(dct: Dict[Tuple, T], dim):
         raise RuntimeError("dim must be 1 or 2")
 
 
-def group_tupledict_sum(dct: Dict[Tuple, Any], key_index: int):
+def group_tupledict_sum(dct: Dict[Tuple, float | int], key_index: int):
     ret = defaultdict(float)
     for k, v in dct.items():
         ret[k[key_index]] += v

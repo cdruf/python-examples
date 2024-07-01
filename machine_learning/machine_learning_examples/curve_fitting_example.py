@@ -1,20 +1,18 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.optimize import curve_fit
-from functools import reduce
 
 # %%
+# Example data
 
-df = pd.read_csv("dat/curve_fitting_example.csv")
+df = pd.read_csv("data/curve_fitting_example.csv")
 df.head()
 x = df.index.to_numpy()
 y = df['values'].to_numpy()
 
+
 # %%
-##
-"""
 # Functions
-"""
 
 
 def fit_and_plot(x, y, func):
@@ -32,7 +30,7 @@ def calculate_mae(x, y, func, params):
 
 
 # %%
-##
+# Linear model
 
 
 def linear_fkt(x, a, b):
@@ -44,18 +42,19 @@ print(f"MAE = {calculate_mae(x, y, linear_fkt, params)}")
 
 
 # %%
-##
+# Quadratic model
 
 def quadratic(x, a, b, c):
     return a * x ** 2 + b * x + c
 
 
 params = fit_and_plot(x, y, quadratic)
+print(params)
 print(f"MAE = {calculate_mae(x, y, quadratic, params)}")
 
 
 # %%
-##
+
 
 def cubic(x, a, b, c, d):
     return a * x ** 3 + b * x ** 2 + c * x + d
@@ -66,8 +65,7 @@ print(f"MAE = {calculate_mae(x, y, cubic, params)}")
 
 
 # %%
-##
-
+# Polynomial model
 
 def poly4(x, a, b, c, d, e):
     return a * x ** 4 + b * x ** 3 + c * x ** 2 + d * x + e
@@ -77,7 +75,6 @@ params = fit_and_plot(x, y, poly4)
 print(f"MAE = {calculate_mae(x, y, poly4, params)}")
 
 
-##
 # %%
 
 def poly5(x, a, b, c, d, e, f):
@@ -87,12 +84,10 @@ def poly5(x, a, b, c, d, e, f):
 params = fit_and_plot(x, y, poly5)
 print(f"MAE = {calculate_mae(x, y, poly5, params)}")
 
-
-##
-
-
-def polynomial(x, *coefficients):
-    ret = 0
-    for i, c in enumerate(coefficients):
-        ret += c * x ** (len(coefficients) - 1 - i)
-    return ret
+# %%
+# With initial guess
+params, _ = curve_fit(quadratic, x, y, p0=[-12, 680, 4200])
+fig, ax = plt.subplots()
+ax.scatter(x, y)
+ax.plot(x, quadratic(x, *params), color='red')
+plt.show()
