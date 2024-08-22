@@ -57,7 +57,7 @@ def get_variables_df(model):
     """
     Get the variables with values and reduced costs in a DataFrame.
     """
-    return pd.DataFrame(data=[(v.varName, v.x, (v.x * v.obj),
+    return pd.DataFrame(data=[(v.varName, v.x_sc, (v.x_sc * v.obj),
                                get_vbasis_name(v), v.rc,
                                v.SAObjLow, v.SAObjUp,
                                get_allowable_decrease_of_objective_coefficient(model, v),

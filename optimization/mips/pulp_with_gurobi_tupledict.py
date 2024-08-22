@@ -12,7 +12,7 @@ import pulp as pl
 
 
 def dsum(dct, *args):
-    ret = dct.sum(*args)
+    ret = dct._sum(*args)
     ret.constant = 0.0
     return ret
 

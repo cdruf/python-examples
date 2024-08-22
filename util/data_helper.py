@@ -58,15 +58,25 @@ def all_strings_to_lower(df: pd.DataFrame):
             df[col] = df[col].str.lower()
 
 
-def load_data_and_clean(file, sheet_name, key_cols, skiprows=0):
+def load_data_and_clean(file, sheet_name, key_cols, skiprows=0,
+                        to_lower_case=True):
     """
     Standard procedure to load a sheet from the Excel that includes basic data cleaning steps.
+
+    Cleaning steps:
+    + Convert numeric column headers to strings
+    + Drop empty columns
+    + Drop empty rows (missing value in any of the key columns)
+    + Trim all strings
+    + Convert all strings to lower case (optional)
+
 
     Args:
         file:
         sheet_name:
         key_cols: single column header or list of column headers
         skiprows:
+        to_lower_case:
 
     Returns:
         Data frame
@@ -75,22 +85,22 @@ def load_data_and_clean(file, sheet_name, key_cols, skiprows=0):
     df = pd.read_excel(file, sheet_name=sheet_name, skiprows=skiprows)
     df.columns = df.columns.astype(str)  # Numeric headers are a problem in the used functions
     df = drop_unnamed_cols(df)
-    df = drop_invalid_rows(df, key_cols)
     trim_all_strings(df)
-    all_strings_to_lower(df)
-    if type(key_cols) == str:
-        df.set_index(key_cols.lower(), inplace=True)
-    elif type(key_cols) == list:
-        df.set_index([c.lower() for c in key_cols], inplace=True)
+    df = drop_invalid_rows(df, key_cols)
+    if to_lower_case:
+        all_strings_to_lower(df)
+    if isinstance(key_cols, str):
+        if to_lower_case:
+            df.set_index(key_cols.lower(), inplace=True, verify_integrity=True)
+        else:
+            df.set_index(key_cols, inplace=True, verify_integrity=True)
+    elif isinstance(key_cols, list):
+        if to_lower_case:
+            df.set_index([c.lower() for c in key_cols], inplace=True, verify_integrity=True)
+        else:
+            df.set_index([c for c in key_cols], inplace=True, verify_integrity=True)
     else:
         raise RuntimeError("key_cols must be of type str of list")
-    if len(df.index.unique()) < len(df.index):
-        tmp = df.reset_index()[key_cols.lower()]
-        if type(key_cols) == str:
-            print(tmp.loc[tmp.duplicated()])
-        elif type(key_cols) == list:
-            print(tmp.loc[tmp.duplicated(), :])
-        raise RuntimeError("key_cols must contain unique keys")
     return df
 
 

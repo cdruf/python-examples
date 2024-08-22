@@ -32,6 +32,6 @@ def solve(categories, minNutrition, maxNutrition, foods,
     m.optimize()
 
     for v in m.getVars():
-        print('%s %g' % (v.varName, v.x))
+        print('%s %g' % (v.varName, v.x_sc))
 
     print('Obj: %g' % m.objVal)

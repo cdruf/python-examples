@@ -1,20 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-
-@author: Christian Ruf
-
 Facility location problem.
-
+@author: Christian Ruf
 """
 
-from collections import namedtuple
-from time import time
 from dataclasses import dataclass
+from time import time
+
 import gurobipy as gp
 import matplotlib.pyplot as plt
 import numpy as np
-from gurobipy import GRB
 import pandas as pd
+from gurobipy import GRB
 
 # %%
 # Data
@@ -156,9 +153,9 @@ class Model(object):
             gp.quicksum(data.loc_costs[j] * self.y[j] for j in data.locs) +
             gp.quicksum(data.distances[j, i] * self.x[j, i] for j in data.locs for i in data.custs),
             GRB.MINIMIZE)
-        self.m.addConstrs((self.x.sum('*', i) >= data.demands[i]
+        self.m.addConstrs((self.x._sum('*', i) >= data.demands[i]
                            for i in data.custs), "demand")
-        self.m.addConstrs((self.x.sum(j, '*') <= data.capacities[j] * self.y[j]
+        self.m.addConstrs((self.x._sum(j, '*') <= data.capacities[j] * self.y[j]
                            for j in data.locs), "capacity")
         self.m.update()
         # self.m.write("./facility.lp")
@@ -187,7 +184,7 @@ class Model(object):
 # Visualization with matplotlib
 
 def draw_figure(dat: Instance, sol: Solution):
-    locs_volume = [sol.xs.sum(j, '*').getValue() for j in dat.locs]
+    locs_volume = [sol.xs._sum(j, '*').getValue() for j in dat.locs]
     colors = [j for j in dat.locs]
     fig, ax = plt.subplots()
     ax.set_xlim(0, 100)

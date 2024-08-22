@@ -26,7 +26,7 @@ def fit_and_plot(x, y, func):
 
 def calculate_mae(x, y, func, params):
     fitted = func(x, *params)
-    return abs(fitted - y).sum() / len(x)
+    return abs(fitted - y)._sum() / len(x)
 
 
 # %%

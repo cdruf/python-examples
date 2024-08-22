@@ -13,7 +13,7 @@ def obj(x):
 
 def c1(x):
     """ sum(abs(x)) >= 5 """
-    return np.abs(x).sum() - 5
+    return np.abs(x)._sum() - 5
 
 
 sol = minimize(
