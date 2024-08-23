@@ -17,7 +17,7 @@ model.x = pyo.Var(model.J, domain=pyo.NonNegativeReals)
 
 
 def obj_expression(m):
-    return pyo.summation(m.c, m.x_sc)
+    return pyo.summation(m.c, m.x)
 
 
 model.OBJ = pyo.Objective(rule=obj_expression)
@@ -25,7 +25,7 @@ model.OBJ = pyo.Objective(rule=obj_expression)
 
 def ax_constraint_rule(m, i):
     # return the expression for the constraint for i
-    return sum(m.a[i, j] * m.x_sc[j] for j in m.J) >= m.b[i]
+    return sum(m.a[i, j] * m.x[j] for j in m.J) >= m.b[i]
 
 
 # the next line creates one constraint for each member of the set model.I
