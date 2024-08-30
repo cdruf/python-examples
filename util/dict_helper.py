@@ -1,5 +1,6 @@
 from collections import defaultdict
 from functools import reduce
+from types import MappingProxyType
 from typing import List, Dict, Tuple, TypeVar, Any, Set
 
 import gurobipy as gp
@@ -10,6 +11,7 @@ T = TypeVar('T')
 T1 = TypeVar('T1')
 T2 = TypeVar('T2')
 T3 = TypeVar('T3')
+T4 = TypeVar('T4')
 
 
 def print_first_entries(dct, n=3, sep=',', sort_keys=False):
@@ -88,13 +90,6 @@ def tupledict_to_2d_dict(dct: Dict[Tuple[T1, T2], T]) -> Dict[T1, Dict[T2, T]]:
     return dict(ret)
 
 
-def tupledict_to_2d_dict(dct: Dict[Tuple[T1, T2], T]) -> Dict[T1, Dict[T2, T]]:
-    ret = defaultdict(dict)
-    for (k1, k2), val in dct.items():
-        ret[k1][k2] = val
-    return dict(ret)
-
-
 def tupledict_to_3d_dict(dct: Dict[Tuple[T1, T2, T3], T]) -> Dict[T1, Dict[T2, Dict[T3, T]]]:
     ret = {}
     for (k1, k2, k3), val in dct.items():
@@ -104,6 +99,29 @@ def tupledict_to_3d_dict(dct: Dict[Tuple[T1, T2, T3], T]) -> Dict[T1, Dict[T2, D
             ret[k1][k2] = {}
         ret[k1][k2][k3] = val
     return ret
+
+
+def extract_dict_from_2d_tupledict(dct: Dict[Tuple[T1, T2], T3] | gp.tupledict | MappingProxyType,
+                                   key_1: T1 | None = None,
+                                   key_2: T2 | None = None) -> Dict[T1, T3] | Dict[T2, T3]:
+    if key_1 is None:  # => select all entries where the 2nd key == key_2
+        return {k1: val for (k1, k2), val in dct.items() if k2 == key_2}
+    if key_2 is None:  # => select all entries where the 1st key == key_1
+        return {k2: val for (k1, k2), val in dct.items() if k1 == key_1}
+    raise RuntimeError('One key must be None')
+
+
+def extract_dict_from_3d_tupledict(dct: Dict[Tuple[T1, T2, T3], T4] | gp.tupledict | MappingProxyType,
+                                   key_1: T1 | None = None,
+                                   key_2: T2 | None = None,
+                                   key_3: T3 | None = None):
+    if key_1 is None:
+        return {k1: val for (k1, k2, k3), val in dct.items() if key_2 == k2 and key_3 == k3}
+    if key_2 is None:
+        return {k2: val for (k1, k2, k3), val in dct.items() if key_1 == k1 and key_3 == k3}
+    if key_3 is None:
+        return {k3: val for (k1, k2, k3), val in dct.items() if key_1 == k1 and key_2 == k2}
+    raise RuntimeError('One key must be None')
 
 
 def to_np_1d_0(dct: Dict, n, mapping=None, dtype=np.int_) -> np.array:
