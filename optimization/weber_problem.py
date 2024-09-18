@@ -30,17 +30,17 @@ def optimize(weights, lons, lats):
 
 
 def visualize_simple(weights, lons, lats, x, y):
-    plt.scatter(lons, lats, sizes=weights * 10)
-    plt.scatter(x, y, sizes=[weights.sum() * 10])
     for idx, lon in enumerate(lons):
         lat = lats[idx]
         plt.plot([x, lon], [y, lat], color='grey')
+    plt.scatter(lons, lats, sizes=weights * 10)
+    plt.scatter(x, y, sizes=[weights.sum() * 10])
     plt.show()
 
 
 if __name__ == '__main__':
     print(os.getcwd())
-    np.random.seed(3)
-    ws, xs, ys = generate_data(20)
+    np.random.seed(4)
+    ws, xs, ys = generate_data(200)
     x, y = optimize(ws, xs, ys)
     visualize_simple(ws, xs, ys, x, y)
