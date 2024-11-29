@@ -28,10 +28,14 @@ class MyList:
         else:
             raise TypeError("Index must be an int or slice")
 
+    def __len__(self):
+        return self.current_idx + 1
+
 
 if __name__ == '__main__':
     lst = list(range(11))
     my_list = MyList()
+    assert len(my_list) == len(lst)
     assert my_list[0] == lst[0]
     assert my_list[10] == lst[10]
     try:
