@@ -1,3 +1,4 @@
+import math
 from collections import defaultdict
 from typing import Mapping, List, Any, TypeVar, Set
 
@@ -66,6 +67,18 @@ def loss_function_standard_normal(x: float) -> float:
 
 def loss_function_normal(x: float, mu: float, sigma: float) -> float:
     return sigma * loss_function_standard_normal((x - mu) / sigma)
+
+
+def ceil(x: float, digits=0) -> int | float:
+    if digits == 0:
+        return math.ceil(x)
+    return math.ceil(x * 10 ** digits) / 10 ** digits
+
+
+def floor(x: float, digits=0) -> int | float:
+    if digits == 0:
+        return math.floor(x)
+    return math.floor(x * 10 ** digits) / 10 ** digits
 
 
 if __name__ == "__main__":

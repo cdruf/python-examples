@@ -1,5 +1,6 @@
 # core library requirements
 pip
+setuptools
 pandas
 pandasql
 tabulate
@@ -63,4 +64,3 @@ pydantic
 # GUI
 PyQt5
 
-setuptools

@@ -62,9 +62,9 @@ class MainWindow(QMainWindow):
             self.tf_celsius.setText(str(c))
 
 
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()
-app.exec_()
-
-print("Finished")
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    app.exec_()
+    print("Finished")
