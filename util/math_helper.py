@@ -2,7 +2,9 @@ import math
 from collections import defaultdict
 from typing import Mapping, List, Any, TypeVar, Set
 
+import numpy as np
 import pandas as pd
+from scipy.linalg import circulant
 from scipy.stats import norm
 
 # Declare type variable
@@ -79,6 +81,17 @@ def floor(x: float, digits=0) -> int | float:
     if digits == 0:
         return math.floor(x)
     return math.floor(x * 10 ** digits) / 10 ** digits
+
+
+def get_circular_smoothing_matrix(n: int, m: int):
+    """
+    :param n: Length of the vector to be smoothed.
+    :param m: Number of periods to be convoluted.
+    """
+    column = np.array([1 / m] * math.ceil(m / 2) + [0] * (n - m) + [1 / m] * math.floor(m / 2))
+    ret = circulant(column)
+    assert all(abs(ret.sum(axis=0) - 1.0) <= 1e-6)
+    return ret
 
 
 if __name__ == "__main__":
