@@ -1,6 +1,4 @@
 import pulp as pl
-from pathlib import Path
-from pprint import pprint
 
 prob = pl.LpProblem("Test_LP", pl.LpMaximize)
 x = pl.LpVariable('x', lowBound=0, cat='Continuous')

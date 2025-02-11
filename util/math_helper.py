@@ -94,6 +94,10 @@ def get_circular_smoothing_matrix(n: int, m: int):
     return ret
 
 
+def get_mape(actual: np.ndarray, predicted: np.ndarray) -> float:
+    return np.mean(np.abs((actual - predicted) / actual))
+
+
 if __name__ == "__main__":
     result = loss_function_normal(120, 100, 50)
     print(result)  # 11.52 expected

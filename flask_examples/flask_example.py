@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pydantic
 from flask import Flask, request
 from pydantic import BaseModel
@@ -31,8 +29,6 @@ def my_endpoint(number):
     return my_function(number)
 
 
-###
-
 class QueryModelForMyFunction(BaseModel):
     name: str
 
@@ -55,11 +51,3 @@ def my_endpoint_2():
         }, 400
 
     return {"message": "Here you have it", "payload": result}
-
-
-###
-
-class MyQueryModel(pydantic.BaseModel):
-    int_list: pydantic.conlist(int, min_length=1, max_length=5)
-    positive_float: pydantic.PositiveFloat
-    optional_param: Optional[pydantic.conlist(int, min_length=1)]

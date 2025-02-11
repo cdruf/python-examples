@@ -41,7 +41,6 @@ def mycallback(model, where):
 
 
 # Build model with PuLP
-
 mdl = pl.LpProblem("MyLP", pl.LpMaximize)
 xs = pl.LpVariable.dicts('x', indices=range(2), cat=pl.LpInteger)
 mdl += pl.lpSum((i + 1) * x for i, x in xs.items())
