@@ -10,7 +10,7 @@ from scipy.stats import norm
 # Declare type variable
 T = TypeVar('T')
 
-EPS = 1e-6  # Numerical value for zero
+EPS = 1e-9  # Numerical value for zero
 
 
 def eq(x, y, tolerance=EPS) -> bool:
@@ -25,7 +25,16 @@ def get_image(x_maps_to_y: Mapping[Any, T]) -> List[T]:
     return list(set([y for x, y in x_maps_to_y.items()]))
 
 
-def get_pre_images(x_maps_to_y: Mapping, Y: list = None):
+def get_pre_images_depr(x_maps_to_y: Mapping, Y: list = None):
+    X_y = {y: [] for y in set(x_maps_to_y.values())}
+    if Y is not None:
+        X_y.update({y: [] for y in Y})
+    for x, y in x_maps_to_y.items():
+        X_y[y].append(x)
+    return X_y
+
+
+def get_pre_images(x_maps_to_y: Mapping, Y: list | set = None):
     """
     Given  mapping f : X --> Y,
     returns a mapping g : Y --> Sets of X, g(y) = X_y
@@ -34,18 +43,19 @@ def get_pre_images(x_maps_to_y: Mapping, Y: list = None):
     It possible to supply Y, which is then used to include y that are not in the image of f.
 
     Args:
-        x_maps_to_y (Map): A mapping of the form X --> Y
+        x_maps_to_y (Map): A mapping X --> Y
         Y (List): Set of elements without an x that should be included anyways.
 
     Returns:
         "Reverse mapping"
 
     """
-    X_y = {y: [] for y in set(x_maps_to_y.values())}
+    X_y = {y: set() for y in set(x_maps_to_y.values())}
     if Y is not None:
-        X_y.update({y: [] for y in Y})
+        X_y.update({y: set() for y in Y})
     for x, y in x_maps_to_y.items():
-        X_y[y].append(x)
+        assert x not in X_y[y]
+        X_y[y].add(x)
     return X_y
 
 

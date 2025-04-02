@@ -53,6 +53,7 @@ ortools
 PuLP
 # cplex
 gekko
+highspy
 
 # Simulation
 simpy

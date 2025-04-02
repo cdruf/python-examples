@@ -54,7 +54,19 @@ def group_tupledict_mean(dct: Dict[Tuple, float | int], key_index: int):
     return {k: v / counts[k] for k, v in ret.items()}
 
 
-def group_tupledict_multi_sum(dct: Dict, key_indices: List[int]):
+def group_tupledict_multi_sum(dct: Dict, key_indices: List[int] | int):
+    if isinstance(key_indices, int):
+        ret = defaultdict(float)
+        for k, v in dct.items():
+            ret[k[key_indices]] += v
+        return dict(ret)
+
+    if len(key_indices) == 1:
+        ret = defaultdict(float)
+        for k, v in dct.items():
+            ret[k[key_indices[0]]] += v
+        return dict(ret)
+
     ret = defaultdict(float)
     for k, v in dct.items():
         ret[tuple(k[idx] for idx in key_indices)] += v
