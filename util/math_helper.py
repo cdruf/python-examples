@@ -1,5 +1,6 @@
 import math
 from collections import defaultdict
+from itertools import chain, combinations
 from typing import Mapping, List, Any, TypeVar, Set
 
 import numpy as np
@@ -71,6 +72,14 @@ def reverse_n_to_m(m: Mapping[Any, Set]):
     for x, y in expanded:
         ret[y].add(x)
     return dict(ret)
+
+
+def powerset(iterable, non_empty=True):
+    """
+    Return the powerset.
+    """
+    start = 1 if non_empty else 0
+    return chain.from_iterable(combinations(iterable, r) for r in range(start, len(iterable) + 1))
 
 
 def loss_function_standard_normal(x: float) -> float:

@@ -1,5 +1,6 @@
 from collections import defaultdict
 from functools import reduce
+from operator import itemgetter
 from types import MappingProxyType
 from typing import List, Dict, Tuple, TypeVar, Any, Set
 
@@ -229,3 +230,13 @@ def get_all_slices_3d(dtc_ijk: Dict[Tuple, float | int], dtype=float):
     return (dict(ret_ij), dict(ret_ik), dict(ret_jk),
             dict(ret_i), dict(ret_j), dict(ret_k),
             ret)
+
+
+def dict_to_arrays(dct: Dict[T1, T2], sort_by_keys: bool = False, sort_by_values: bool = False) -> Tuple[
+    np.ndarray, np.ndarray]:
+    assert not (sort_by_keys and sort_by_values)
+    if sort_by_keys:
+        dct = dict(sorted(dct.items(), key=itemgetter(0)))
+    if sort_by_values:
+        dct = dict(sorted(dct.items(), key=itemgetter(1)))
+    return np.array(list(dct.keys())), np.array(list(dct.values()))

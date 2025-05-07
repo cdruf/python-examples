@@ -3,6 +3,9 @@ import pulp as pl
 """
 The model has 2 constraints. However, the Gurobi output becomes 
 Optimize a model with 4 rows, 2 columns and 6 nonzeros
+
+This problem occurred with Gurobi 11 and PuLP 2.9.0.
+Still occurs with Gurobi 12 and PuLP 3.1.1.
 """
 
 
@@ -42,7 +45,7 @@ if __name__ == "__main__":
     mdl3 = get_mdl()
     solver = pl.GUROBI(timeLimit=120, mipgap=0.0001, warmStart=True)  # Indicate warm start
     solver.initGurobi()
-    solver.model.Params.IntFeasTol = 1e-9
+    solver.model.Params.IntFeasTol = 1e-9  # note: not using `solverModel`!
     # set optimal values for warm start
     mdl3.variables()[0].setInitialValue(1)
     mdl3.variables()[1].setInitialValue(4)

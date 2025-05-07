@@ -16,7 +16,7 @@ from gurobipy import GRB
 # %%
 # Data
 
-eps = 0.0001  # floating point precision
+EPS = 0.0001  # floating point precision
 
 
 def euclidean(x1, y1, x2, y2):
@@ -92,10 +92,8 @@ class Instance:
         if not (self.distances == other.distances).all():
             return False
 
-
-def __str__(self):
-    return str(self.__dict__)
-    # return "Instance [m = %i, n = %i]" % (m, n)
+    def __str__(self):
+        return str(self.__dict__)
 
 
 # %%
@@ -131,7 +129,7 @@ def mycallback(model, where):
               (nodecnt, obj, bnd, solcnt))
         model._times.append(time() - model._start)
         model._best_value.append(obj)
-        g = abs(bnd - obj) / (bnd + eps)
+        g = abs(bnd - obj) / (bnd + EPS)
 
 
 class Model(object):
